@@ -4,9 +4,11 @@ const {DealRequestStruct,
      require("../helper-hardhat-config")
 
 async function queueAndExecute() {
+  //TODO replace dealrequeststruct with the struct you made in the other react file
   const args = [DealRequestStruct]
   const functionToCall = "makeDealProposal"
   const daoDealClient = await ethers.getContract("DaoDealClient")
+  //TODO args is the custom struct with all the info. apparently you just need 4. get all that info from the other react file.
   const encodedFunctionCall = daoDealClient.interface.encodeFunctionData(functionToCall, args)
   const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION))
   // could also use ethers.utils.id(PROPOSAL_DESCRIPTION)
