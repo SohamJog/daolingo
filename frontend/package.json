@@ -13,6 +13,7 @@
     "@material-tailwind/react": "^1.2.4",
     "ethers": "^6.5.1",
     "prop-types": "^15.8.1",
+    "cids": "^1.1.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",

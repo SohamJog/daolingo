@@ -3,7 +3,6 @@
 // Refer to queue-and-execute.js for how to interact with the contract
 
 
-
 import React, { useState, useEffect } from "react";
 import governorContract from "../../contracts/GovernorContract.json";
 import clientContract from "../../contracts/DaoDealClient.json";
@@ -72,32 +71,44 @@ function Inputs() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // do something with the carLink value, like send it to a backend API
-    console.log(commP);
-    console.log(carLink);
-    console.log(pieceSize);
-    console.log(carSize);
+    // console.log(commP);
+    // console.log(carLink);
+    // console.log(pieceSize);
+    // console.log(carSize);
 
     try {
       setErrorMessageSubmit(
         ""
       );
 
+      console.log("here");
       cid = new CID(commP);
+
+      
+
       const { ethereum } = window;
+      
+      
       if (ethereum) {
+
         const provider = new ethers.BrowserProvider(ethereum);
         const signer = await provider.getSigner();
+
+
 
         daoDealClient = new ethers.Contract(
           clientContractAddress,
           clientContractABI,
           signer
         );
+
         governor = new ethers.Contract(
           governorContractAddress,
           governorContractABI,
           signer
         );
+        
+
 
         const extraParamsV1 = [
           carLink,
@@ -126,21 +137,28 @@ function Inputs() {
 
         //TODO: change this using propose.js
 
-        const transaction = await dealClient.makeDealProposal(
-          DealRequestStruct
-        );
+        
+        // const transaction = await dealClient.makeDealProposal(
+        //   DealRequestStruct
+        // );
+
         const encodedFunctionCall = daoDealClient.interface.encodeFunctionData("makeDealProposal", [DealRequestStruct]);
 
+
         const proposeTx = await governor.propose(
-          [daoDealClientAddress],
+          [clientContractAddress],
           [0],
           [encodedFunctionCall],
           ""
         )
+
+
         const proposeReceipt = await proposeTx.wait()
         const proposalId = proposeReceipt.events[0].args.proposalId
         console.log(`Proposed with proposal ID:\n  ${proposalId}`)
         const proposalState = await governor.state(proposalId)
+
+
 
         //TODO save the proposalId to Polybase?
           //storeProposalId(proposalId);
@@ -219,7 +237,7 @@ function Inputs() {
 
   const connectWalletButton = () => {
     return (
-      <div style={{ display: "flex" }}> <div class="child-1-cw"> 
+      <div style={{ display: "flex" }}> <div className="child-1-cw"> 
       <button
         onClick={connectWalletHandler}
         className="cta-button connect-wallet-button"
@@ -269,147 +287,99 @@ function Inputs() {
   }, []);
 
   return (
-    <div id="container"> 
-      <div style={{ display: "flex" }}> <div class="child-1-cw"> 
-        {connectWalletButton()}
-      </div></div>
+    <div id="container" className="flex flex-col items-center">
 
-      <form class="child-1"  onSubmit={handleSubmit}>
-
-        <div class='child-1-hg'>
-
-        <label>
-          Link to CAR file
-        </label>
-
-
-        <div>
-          <div class="tooltip"
-            data-tooltip-id="carfile-tooltip"
-            data-tooltip-delay-hide={50}
-            data-tooltip-html=" Find a URL to your car file by going to data.fvm.dev and uploading your file (site in development). <br /> You can also go to tech-greedy/generate-car and upload the resulting car file to web3.storage."
-          >
-            <AiOutlineQuestionCircle />
-          </div>
-          <Tooltip id="carfile-tooltip" />
-        </div>
-
-
-        </div>
-
-
-          <input class="input-elem"
-            type="text"
-            value={carLink}
-            onChange={handleChangeCarLink}
-          />
-        
-        <br />
-        <br />
-
-        <div class='child-1-hg'>
-
-        <label> commP </label>
-
-            <div
-              class="tooltip"
-              data-tooltip-id="commp-tooltip"
-              data-tooltip-delay-hide={50}
-              data-tooltip-html="This is also known as the Piece CID. <br /> You can go to data.fvm.dev and get this by uploading your file (site in development). <br />This also can be accessed as the output of tech-greedy/generate-car."
-            >
-              <AiOutlineQuestionCircle />
-            </div>
-            <Tooltip id="commp-tooltip" />
-
-        </div>
-
-          <input class="input-elem"
-            type="text"
-            value={commP}
-            onChange={handleChangeCommP}
-          />
-
-
-        <br />
-        <br />
-
-        <div class='child-1-hg'>
-
-        <label>
-          Piece Size:
-        </label>
-
-        <div
-          class="tooltip"
-          data-tooltip-id="piecesize-tooltip"
-          data-tooltip-delay-hide={50}
-          data-tooltip-html="This is the number of bytes of your Piece (you can read more about Filecoin Pieces in the spec). <br /> You can go to data.fvm.dev and get this by uploading your file (site in development).<br /> This also can be accessed as the output of tech-greedy/generate-car."
-        >
-          <AiOutlineQuestionCircle />
-        </div>
-        <Tooltip id="piecesize-tooltip" />
-
-
-        </div>
-
-          <input class="input-elem"
-            type="text"
-            value={pieceSize}
-            onChange={handleChangePieceSize}
-          />
-        <br />
-        <br />
-
-        <div class='child-1-hg'>
-
-        <label>
-          Car Size:
-        </label>
-
-        <div
-          class="tooltip"
-          data-tooltip-id="carsize-tooltip"
-          data-tooltip-delay-hide={50}
-          data-tooltip-html="This is the size of the CAR file in bytes. <br /> You can go to data.fvm.dev and get this by uploading your file (site in development). <br /> This can be accessed as the output of tech-greedy/generate-car."
-        >
-          <AiOutlineQuestionCircle />
-        </div>
-        <Tooltip id="carsize-tooltip" />
-
-
-        </div>
-
-          <input class="input-elem" type="text" value={carSize} onChange={handleChangeCarSize} />
-        <br />
-        <br />
-
-
-        <button
-          type="submit"
-          style={{ display: "block", width: "50%", margin: "auto" }}
-        >
-          Propose!
-        </button>
-
-
-
-        <div style={{ color: "red" }}> {errorMessageSubmit} </div>
-        { proposingDeal && <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>}
-        <div style={{ color: "green" }}> {txSubmitted} </div>
-      </form>
-
-      <br />
-      <br />
-      <div class="child-1-hg"> 
-        <div style={{ display: "flex", width: "50%", margin: "auto" }}> 
-          {dealIDButton()}
-        </div>
-      </div>
-      {dealID && <div style={{ color: "green", margin:"auto" }}> Deal: {dealID}  </div>}
-
+  <div className="flex justify-center">
+    <div className="child-1-cw">
+      {connectWalletButton()}
     </div>
+  </div>
+
+  <form className="child-1" onSubmit={handleSubmit}>
+
+    <div className="child-1-hg">
+      <label className="mb-1">Link to CAR file</label>
+
+      <div className="relative">
+        <div className="tooltip" data-tooltip-id="carfile-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="Find a URL to your car file by going to data.fvm.dev and uploading your file (site in development).<br />You can also go to tech-greedy/generate-car and upload the resulting car file to web3.storage.">
+          <AiOutlineQuestionCircle />
+        </div>
+        <Tooltip id="carfile-tooltip" />
+      </div>
+    </div>
+
+    <input className="input-elem" type="text" value={carLink} onChange={handleChangeCarLink} />
+
+    <br />
+    <br />
+
+    <div className="child-1-hg">
+      <label className="mb-1">commP</label>
+
+      <div className="tooltip" data-tooltip-id="commp-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is also known as the Piece CID.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
+        <AiOutlineQuestionCircle />
+      </div>
+      <Tooltip id="commp-tooltip" />
+    </div>
+
+    <input className="input-elem" type="text" value={commP} onChange={handleChangeCommP} />
+
+    <br />
+    <br />
+
+    <div className="child-1-hg">
+      <label className="mb-1">Piece Size:</label>
+
+      <div className="tooltip" data-tooltip-id="piecesize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the number of bytes of your Piece (you can read more about Filecoin Pieces in the spec).<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
+        <AiOutlineQuestionCircle />
+      </div>
+      <Tooltip id="piecesize-tooltip" />
+    </div>
+
+    <input className="input-elem" type="text" value={pieceSize} onChange={handleChangePieceSize} />
+
+    <br />
+    <br />
+
+    <div className="child-1-hg">
+      <label className="mb-1">Car Size:</label>
+
+      <div className="tooltip" data-tooltip-id="carsize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the size of the CAR file in bytes.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This can be accessed as the output of tech-greedy/generate-car.">
+        <AiOutlineQuestionCircle />
+      </div>
+      <Tooltip id="carsize-tooltip" />
+    </div>
+
+    <input className="input-elem" type="text" value={carSize} onChange={handleChangeCarSize} />
+
+    <br />
+    <br />
+
+    <button type="submit" className="block w-1/2 mx-auto">
+      Propose!
+    </button>
+
+    <div className="text-red-500">{errorMessageSubmit}</div>
+    {proposingDeal && (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    )}
+    <div className="text-green-500">{txSubmitted}</div>
+  </form>
+
+  <br />
+  <br />
+
+  <div className="child-1-hg">
+    <div className="flex w-1/2 mx-auto">
+      {dealIDButton()}
+    </div>
+  </div>
+
+  {dealID && <div className="text-green-500 mx-auto">Deal: {dealID}</div>}
+</div>
+
   );
 }
 
