@@ -5,21 +5,25 @@
 
 
 import React, { useState, useEffect } from "react";
-import contract from "../contracts/DealClient.json";
+import governorContract from "../../contracts/GovernorContract.json";
+import clientContract from "../../contracts/DaoDealClient.json";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 import { ethers } from "ethers";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import Spinner from 'react-bootstrap/Spinner';
-const CID = require("cids");
+import CID from "cids";
+
 
  // Replace this address with the address of own instance of the deal client contract
 
-const governorContractAddress = "0xa0118C489150489A0DBf3ee8042A0366921affb4";
-const governorContractABI = contract.abi;
-const clientContractAddress = "0xa0118C489150489A0DBf3ee8042A0366921affb4";
-const clientContractABI = contract.abi;
+const governorContractAddress = "0x830F3Af3806a21909db89f95beb3a5c1B068e51f";
+const governorContractABI = governorContract.abi;
+const clientContractAddress = "0x9bD6578b301F84f454868679ce305f3bd467176B";
+const clientContractABI = clientContract.abi;
+let daoDealClient;
 let dealClient;
+let governor;
 let cid;
 
 function Inputs() {
@@ -66,7 +70,6 @@ function Inputs() {
   */
 
   const handleSubmit = async (event) => {
-    // This will be handling deal proposal submission sometime in the future.
     event.preventDefault();
     // do something with the carLink value, like send it to a backend API
     console.log(commP);
@@ -78,16 +81,24 @@ function Inputs() {
       setErrorMessageSubmit(
         ""
       );
+
       cid = new CID(commP);
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.BrowserProvider(ethereum);
         const signer = await provider.getSigner();
-        dealClient = new ethers.Contract(
-          contractAddress,
-          contractABI,
+
+        daoDealClient = new ethers.Contract(
+          clientContractAddress,
+          clientContractABI,
           signer
         );
+        governor = new ethers.Contract(
+          governorContractAddress,
+          governorContractABI,
+          signer
+        );
+
         const extraParamsV1 = [
           carLink,
           carSize,
@@ -110,10 +121,37 @@ function Inputs() {
           extraParamsV1,
         ];
         // console.log(await provider.getBalance("0x42c930a33280a7218bc924732d67dd84d6247af4"));
-        console.log(dealClient.interface);
+        //console.log(dealClient.interface);
+
+
+        //TODO: change this using propose.js
+
         const transaction = await dealClient.makeDealProposal(
           DealRequestStruct
         );
+        const encodedFunctionCall = daoDealClient.interface.encodeFunctionData("makeDealProposal", [DealRequestStruct]);
+
+        const proposeTx = await governor.propose(
+          [daoDealClientAddress],
+          [0],
+          [encodedFunctionCall],
+          ""
+        )
+        const proposeReceipt = await proposeTx.wait()
+        const proposalId = proposeReceipt.events[0].args.proposalId
+        console.log(`Proposed with proposal ID:\n  ${proposalId}`)
+        const proposalState = await governor.state(proposalId)
+
+        //TODO save the proposalId to Polybase?
+          //storeProposalId(proposalId);
+        //End of TODO
+
+        // the Proposal State is an enum data type, defined in the IGovernor contract.
+        // 0:Pending, 1:Active, 2:Canceled, 3:Defeated, 4:Succeeded, 5:Queued, 6:Expired, 7:Executed
+        console.log(`Current Proposal State: ${proposalState}`)
+
+        // end of TODO
+
         console.log("Proposing deal...");
         setProposingDeal(true);
         const receipt = await transaction.wait();
@@ -121,11 +159,15 @@ function Inputs() {
         setProposingDeal(false);
         setTxSubmitted("Transaction submitted! " + receipt.hash);
 
+        //TODO: move this to post voting i'm guessing
+
         dealClient.on("DealProposalCreate", (id, size, verified, price)=>{
           console.log(id, size, verified, price);
         })
-
         console.log("Deal proposed! CID: " + cid);
+
+        // end of TODO
+
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -340,12 +382,17 @@ function Inputs() {
           <input class="input-elem" type="text" value={carSize} onChange={handleChangeCarSize} />
         <br />
         <br />
+
+
         <button
           type="submit"
           style={{ display: "block", width: "50%", margin: "auto" }}
         >
           Propose!
         </button>
+
+
+
         <div style={{ color: "red" }}> {errorMessageSubmit} </div>
         { proposingDeal && <Spinner animation="border" role="status">
           <span className="visually-hidden">Loading...</span>

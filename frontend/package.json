@@ -11,10 +11,14 @@
   "dependencies": {
     "@heroicons/react": "^2.0.12",
     "@material-tailwind/react": "^1.2.4",
+    "ethers": "^6.5.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.2"
+    "react-icons": "^4.9.0",
+    "react-router-dom": "^6.4.2",
+    "react-tooltip": "^5.13.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.22",

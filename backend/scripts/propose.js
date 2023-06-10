@@ -22,9 +22,12 @@ function storeProposalId(proposalId) {
   fs.writeFileSync(proposalsFile, JSON.stringify(proposals), "utf8");
   }
 
-    async function propose(args, functionToCall, proposalDescription) {
+async function propose(args, functionToCall, proposalDescription) {
+
     const governor = await ethers.getContract("GovernorContract");
     const daoDealClient = await ethers.getContract("DaoDealClient");
+
+    
     const encodedFunctionCall = daoDealClient.interface.encodeFunctionData(functionToCall, args);
     console.log(`Proposing ${functionToCall} on ${daoDealClient.address} with ${args}`);
     console.log(`Proposal Description:\n${proposalDescription}`);
