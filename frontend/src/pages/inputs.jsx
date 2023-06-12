@@ -12,7 +12,7 @@ import { ethers } from "ethers";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import Spinner from 'react-bootstrap/Spinner';
 import CID from "cids";
-
+import { checkWalletIsConnected } from "@/scripts/wallet";
 
  // Replace this address with the address of own instance of the deal client contract
 
@@ -39,7 +39,7 @@ function Inputs() {
   const [txSubmitted, setTxSubmitted] = useState("");
   const [dealID, setDealID] = useState("");
   const [proposingDeal, setProposingDeal] = useState(false);
-  const [network, setNetwork] = useState("");
+  //const [network, setNetwork] = useState("");
 
   const handleChangeCommP = (event) => {
     setCommP(event.target.value);
@@ -198,57 +198,36 @@ function Inputs() {
     }
   };
 
-  const checkWalletIsConnected = async () => {
-    const { ethereum } = window;
-    if (!ethereum) {
-      console.log("Make sure you have metamask!");
-      return;
-    } else {
-      console.log("We have the ethereum object", ethereum);
-    }
-    const provider = new ethers.BrowserProvider(ethereum);
-    const network = await provider.getNetwork();
-    setNetwork(network.chainId);
-    console.log(network.chainId);
+  
 
-    ethereum.request({ method: "eth_accounts" }).then((accounts) => {
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an account:", account);
-      } else {
-        console.log("No account found");
-      }
-    });
-  };
+  // const connectWalletHandler = () => {
+  //   const { ethereum } = window;
+  //   if (!ethereum) {
+  //     alert("Get MetaMask!");
+  //     return;
+  //   }
+  //   ethereum
+  //     .request({ method: "eth_requestAccounts" })
+  //     .then((accounts) => {
+  //       console.log("Connected", accounts[0]);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
-  const connectWalletHandler = () => {
-    const { ethereum } = window;
-    if (!ethereum) {
-      alert("Get MetaMask!");
-      return;
-    }
-    ethereum
-      .request({ method: "eth_requestAccounts" })
-      .then((accounts) => {
-        console.log("Connected", accounts[0]);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const connectWalletButton = () => {
-    return (
-      <div style={{ display: "flex" }}> <div className="child-1-cw"> 
-      <button
-        onClick={connectWalletHandler}
-        className="cta-button connect-wallet-button"
-      >
-        Connect Wallet
-      </button>
-      { window && <div style={{ color: "green" }}> Connected </div>}
-      { network && <div style={{ color: "green" }}> Network: Calibration </div>}
-      </div></div>
-    );
-  };
+  // const connectWalletButton = () => {
+  //   return (
+  //     <div style={{ display: "flex" }}> <div className="child-1-cw"> 
+  //     <button
+  //       onClick={connectWalletHandler}
+  //       className="cta-button connect-wallet-button"
+  //     >
+  //       Connect Wallet
+  //     </button>
+  //     { window && <div style={{ color: "green" }}> Connected </div>}
+  //     { network && <div style={{ color: "green" }}> Network: Calibration </div>}
+  //     </div></div>
+  //   );
+  // };
 
   const dealIDButton = () => {
     return (
@@ -287,98 +266,84 @@ function Inputs() {
   }, []);
 
   return (
-    <div id="container" className="flex flex-col items-center">
+    <div id="container" className="bg-black flex flex-col items-center ">
 
-  <div className="flex justify-center">
-    <div className="child-1-cw">
-      {connectWalletButton()}
-    </div>
-  </div>
-
-  <form className="child-1" onSubmit={handleSubmit}>
-
-    <div className="child-1-hg">
-      <label className="mb-1">Link to CAR file</label>
-
-      <div className="relative">
-        <div className="tooltip" data-tooltip-id="carfile-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="Find a URL to your car file by going to data.fvm.dev and uploading your file (site in development).<br />You can also go to tech-greedy/generate-car and upload the resulting car file to web3.storage.">
+    {/* <div className="flex justify-center">
+      <div className="child-1-cw">
+        {connectWalletButton()}
+      </div>
+    </div> */}
+  
+    <form className="my-32 child-1 bg-white p-8 rounded shadow-lg w-5/12" onSubmit={handleSubmit}>
+  
+      <div className="child-1-hg mb-4">
+        <label className="mb-1">Link to CAR file</label>
+  
+        <div className="relative">
+          <div className="tooltip" data-tooltip-id="carfile-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="Find a URL to your car file by going to data.fvm.dev and uploading your file (site in development).<br />You can also go to tech-greedy/generate-car and upload the resulting car file to web3.storage.">
+            <AiOutlineQuestionCircle />
+          </div>
+          <Tooltip id="carfile-tooltip" />
+        </div>
+      </div>
+  
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={carLink} onChange={handleChangeCarLink} />
+  
+      <div className="child-1-hg mb-4">
+        <label className="mb-1">commP</label>
+  
+        <div className="tooltip" data-tooltip-id="commp-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is also known as the Piece CID.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
           <AiOutlineQuestionCircle />
         </div>
-        <Tooltip id="carfile-tooltip" />
+        <Tooltip id="commp-tooltip" />
       </div>
-    </div>
-
-    <input className="input-elem" type="text" value={carLink} onChange={handleChangeCarLink} />
-
-    <br />
-    <br />
-
+  
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={commP} onChange={handleChangeCommP} />
+  
+      <div className="child-1-hg mb-4">
+        <label className="mb-1">Piece Size:</label>
+  
+        <div className="tooltip" data-tooltip-id="piecesize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the number of bytes of your Piece (you can read more about Filecoin Pieces in the spec).<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
+          <AiOutlineQuestionCircle />
+        </div>
+        <Tooltip id="piecesize-tooltip" />
+      </div>
+  
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={pieceSize} onChange={handleChangePieceSize} />
+  
+      <div className="child-1-hg mb-4">
+        <label className="mb-1">Car Size:</label>
+  
+        <div className="tooltip" data-tooltip-id="carsize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the size of the CAR file in bytes.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This can be accessed as the output of tech-greedy/generate-car.">
+          <AiOutlineQuestionCircle />
+        </div>
+        <Tooltip id="carsize-tooltip" />
+      </div>
+  
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={carSize} onChange={handleChangeCarSize} />
+  
+      <button type="submit" className="block bg-teal-500 text-white text-center rounded px-4 py-2 w-full mb-4 hover:bg-teal-600 transition-colors">
+        Propose!
+      </button>
+  
+      <div className="text-red-500 mb-2">{errorMessageSubmit}</div>
+      {proposingDeal && (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+      <div className="text-green-500 mb-2">{txSubmitted}</div>
+    </form>
+  
     <div className="child-1-hg">
-      <label className="mb-1">commP</label>
-
-      <div className="tooltip" data-tooltip-id="commp-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is also known as the Piece CID.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
-        <AiOutlineQuestionCircle />
+      <div className="flex w-1/2 mx-auto">
+        {dealIDButton()}
       </div>
-      <Tooltip id="commp-tooltip" />
     </div>
-
-    <input className="input-elem" type="text" value={commP} onChange={handleChangeCommP} />
-
-    <br />
-    <br />
-
-    <div className="child-1-hg">
-      <label className="mb-1">Piece Size:</label>
-
-      <div className="tooltip" data-tooltip-id="piecesize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the number of bytes of your Piece (you can read more about Filecoin Pieces in the spec).<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
-        <AiOutlineQuestionCircle />
-      </div>
-      <Tooltip id="piecesize-tooltip" />
-    </div>
-
-    <input className="input-elem" type="text" value={pieceSize} onChange={handleChangePieceSize} />
-
-    <br />
-    <br />
-
-    <div className="child-1-hg">
-      <label className="mb-1">Car Size:</label>
-
-      <div className="tooltip" data-tooltip-id="carsize-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is the size of the CAR file in bytes.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This can be accessed as the output of tech-greedy/generate-car.">
-        <AiOutlineQuestionCircle />
-      </div>
-      <Tooltip id="carsize-tooltip" />
-    </div>
-
-    <input className="input-elem" type="text" value={carSize} onChange={handleChangeCarSize} />
-
-    <br />
-    <br />
-
-    <button type="submit" className="block w-1/2 mx-auto">
-      Propose!
-    </button>
-
-    <div className="text-red-500">{errorMessageSubmit}</div>
-    {proposingDeal && (
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    )}
-    <div className="text-green-500">{txSubmitted}</div>
-  </form>
-
-  <br />
-  <br />
-
-  <div className="child-1-hg">
-    <div className="flex w-1/2 mx-auto">
-      {dealIDButton()}
-    </div>
+  
+    {dealID && <div className="text-green-500 mx-auto">Deal: {dealID}</div>}
   </div>
-
-  {dealID && <div className="text-green-500 mx-auto">Deal: {dealID}</div>}
-</div>
+  
 
   );
 }

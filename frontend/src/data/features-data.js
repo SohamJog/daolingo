@@ -2,29 +2,30 @@ import {
   StarIcon,
   ArrowPathIcon,
   FingerPrintIcon,
+  CheckIcon,
 } from "@heroicons/react/24/solid";
 
 export const featuresData = [
   {
     color: "blue",
-    title: "Awarded Agency",
+    title: "Data Posting Rewards",
     icon: StarIcon,
     description:
-      "Divide details about your product or agency work into parts. A paragraph describing a feature will be enough.",
-  },
-  {
-    color: "red",
-    title: "Free Revisions",
-    icon: ArrowPathIcon,
-    description:
-      "Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious.",
+      "Earn rewards for contributing rare and dying language data to the network. Become a member and start contributing today!",
   },
   {
     color: "teal",
-    title: "Verified Company",
+    title: "Data Validity Voting",
+    icon: CheckIcon,
+    description:
+      "Immerse yourself in the DAO community and vote to uphold the accuracy of the posted language data, fostering a community-driven commitment to maintaining the highest standards.",
+  },
+  {
+    color: "red",
+    title: "Data Access for ML Model Training",
     icon: FingerPrintIcon,
     description:
-      "Write a few lines about each one. A paragraph describing a feature will be enough. Keep you user engaged!",
+      "Access language data and train custom machine learning models for language-related tasks, empowering communities that utilize these languages.",
   },
 ];
 

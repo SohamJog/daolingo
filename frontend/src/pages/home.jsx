@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -8,17 +8,35 @@ import {
   IconButton,
   Input,
   Textarea,
+  button,
 } from "@material-tailwind/react";
 import { UsersIcon } from "@heroicons/react/24/solid";
 import { PageTitle, Footer } from "@/widgets/layout";
 import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
+import { createUser } from "../scripts/polybase.js";
+import { ethers } from "ethers";
+
+
+
 
 export function Home() {
+  
+
+ 
+ 
+
   return (
     <>
+   
+       
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
+        
         <div className="absolute top-0 h-full w-full bg-[url('https://images.unsplash.com/photo-1521920592574-49e0b121c964?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center" />
+
+
+        
+
         <div className="absolute top-0 h-full w-full bg-black/75 bg-cover bg-center" />
         <div className="max-w-8xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
@@ -37,6 +55,14 @@ export function Home() {
           </div>
         </div>
       </div>
+
+
+      <div>
+     
+     
+
+    </div>
+
       <section className="-mt-32 bg-gray-50 px-4 pb-20 pt-4">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -56,26 +82,35 @@ export function Home() {
             <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white p-3 text-center shadow-lg">
                 <UsersIcon className="h-6 w-6 text-blue-gray-900" />
+
+
+
               </div>
               <Typography
                 variant="h3"
                 className="mb-3 font-bold"
                 color="blue-gray"
               >
-                Working with us is a pleasure
+                Become a part of a revolution
               </Typography>
               <Typography className="mb-8 font-normal text-blue-gray-500">
-                Don't let your uses guess by attaching tooltips and popoves to
-                any element. Just make sure you enable them first via
-                JavaScript.
-                <br />
-                <br />
-                The kit comes with three pre-built pages to help you get started
-                faster. You can change the text and images and you're good to
-                go. Just make sure you enable them first via JavaScript.
+              Contribute to the expansive archive of languages, preserving and safeguarding linguistic heritage for future generations. Join a passionate community dedicated to language preservation, revitalization, and research. Explore diverse linguistic traditions, connect with fellow language enthusiasts, and embark on a journey of discovery. Unleash your curiosity, share your expertise, and make a lasting impact on the world of languages. Together, we can build a vibrant and inclusive linguistic tapestry that celebrates the richness and diversity of human communication. Join us today and be a catalyst for the language revolution.
+
+
               </Typography>
               <Button variant="outlined">read more</Button>
+              
+              <div>
+              <Button variant="outlined" onClick={createUser}>
+                Generate User
+              </Button>
             </div>
+
+
+              
+            </div>
+
+
             <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
               <Card className="shadow-lg shadow-gray-500/10">
                 <CardHeader className="relative h-56">
