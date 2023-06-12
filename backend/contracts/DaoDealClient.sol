@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import {MarketAPI} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/MarketAPI.sol";
-import {CommonTypes} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
-import {MarketTypes} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/types/MarketTypes.sol";
-import {AccountTypes} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/types/AccountTypes.sol";
-import {CommonTypes} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
-import {AccountCBOR} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/cbor/AccountCbor.sol";
-import {MarketCBOR} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/cbor/MarketCbor.sol";
-import {BytesCBOR} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/cbor/BytesCbor.sol";
-import {BigNumbers, BigNumber} from "../node_modules/@zondax/solidity-bignumber/src/BigNumbers.sol";
-import {BigInts} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/utils/BigInts.sol";
-import {CBOR} from "../node_modules/solidity-cborutils/contracts/CBOR.sol";
-import {Misc} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/utils/Misc.sol";
-import {FilAddresses} from "../node_modules/@zondax/filecoin-solidity/contracts/v0.8/utils/FilAddresses.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import {MarketAPI} from "@zondax/filecoin-solidity/contracts/v0.8/MarketAPI.sol";
+import {CommonTypes} from "@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
+import {MarketTypes} from "@zondax/filecoin-solidity/contracts/v0.8/types/MarketTypes.sol";
+import {AccountTypes} from "@zondax/filecoin-solidity/contracts/v0.8/types/AccountTypes.sol";
+import {CommonTypes} from "@zondax/filecoin-solidity/contracts/v0.8/types/CommonTypes.sol";
+import {AccountCBOR} from "@zondax/filecoin-solidity/contracts/v0.8/cbor/AccountCbor.sol";
+import {MarketCBOR} from "@zondax/filecoin-solidity/contracts/v0.8/cbor/MarketCbor.sol";
+import {BytesCBOR} from "@zondax/filecoin-solidity/contracts/v0.8/cbor/BytesCbor.sol";
+import {BigNumbers, BigNumber} from "@zondax/solidity-bignumber/src/BigNumbers.sol";
+import {BigInts} from "@zondax/filecoin-solidity/contracts/v0.8/utils/BigInts.sol";
+import {CBOR} from "solidity-cborutils/contracts/CBOR.sol";
+import {Misc} from "@zondax/filecoin-solidity/contracts/v0.8/utils/Misc.sol";
+import {FilAddresses} from "@zondax/filecoin-solidity/contracts/v0.8/utils/FilAddresses.sol";
 
 using CBOR for CBOR.CBORBuffer;
 

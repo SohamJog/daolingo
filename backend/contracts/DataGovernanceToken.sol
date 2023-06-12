@@ -7,7 +7,7 @@ contract DataGovernanceToken is ERC20Votes {
     uint256 public s_maxSupply = 1000000000000000000000000;
 
     constructor() 
-        ERC20("DataGovernanceToken", "DLNG") 
+        ERC20("DataGovernanceToken", "DGT") 
         ERC20Permit("DataGovernanceToken")
     {
         _mint(msg.sender, s_maxSupply);

@@ -1,6 +1,42 @@
 # FEVM-Data-DAO-Kit
 
+This is a beta kit to demo how to build a basic Decentralized Autonomous Organization (DAO) on Filecoin. Currently, this kit contains these [OpenZeppelin contracts](https://docs.openzeppelin.com/contracts/4.x/governance): Timelock.sol, Governor.sol, and ERC20Votes. These contracts are used in conjuction with the [Filecoin Client Contract](https://github.com/filecoin-project/fvm-starter-kit-deal-making) to create a DAO that can vote on whether to propose a specific storage deal. This initial version is based on Patrick Collin's excellent repo and tutorial so be sure to check them out to learn more about how this DAO template works!
 
+* [Video](https://www.youtube.com/watch?v=AhJtmUqhAqg)
+* [Original Repo](https://github.com/PatrickAlphaC/dao-template)
+
+## Cloning the Repo
+
+Open up your terminal (or command prompt) and navigate to a directory you would like to store this code on. Once there type in the following command:
+
+
+```
+git clone  https://github.com/filecoin-project/fevm-data-dao-kit.git
+cd fevm-data-dao-kit
+yarn install
+```
+
+
+This will clone the data dao kit onto your computer, switch directories into the newly installed kit, and install the dependencies the kit needs to work.
+
+## Get a Private Key
+
+You can get a private key from a wallet provider [such as Metamask](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key).
+
+
+## Add your Private Key as an Environment Variable
+
+Add your private key as an environment variable by running this command:
+
+ ```
+export PRIVATE_KEY='abcdef'
+```
+
+If you use a .env file, don't commit and push any changes to .env files that may contain sensitive information, such as a private key! If this information reaches a public GitHub repository, someone can use it to check if you have any Mainnet funds in that wallet address, and steal them!
+
+## Fund the Deployer Address
+
+Go to the [Calibration testnet faucet](https://faucet.calibration.fildev.network/), and paste in the Ethereum address from the previous step. This will send some Calibration testnet FIL to the account.
 
 ## Deploy the Contracts
 
