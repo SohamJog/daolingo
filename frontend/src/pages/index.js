@@ -10,5 +10,6 @@ export { default as Inputs } from "@/pages/inputs";
 export { default as Profile } from "@/pages/profile";
 export { default as SignIn } from "@/pages/sign-in";
 export { default as SignUp } from "@/pages/sign-up";
+export {default as VoterPage} from "@/pages/voterpage";
 
 

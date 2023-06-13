@@ -127,33 +127,20 @@ function Inputs() {
         //TODO this is the one we have to use
         const cidHexString = `0x${Buffer.from(cid.bytes).toString('hex')}`;
 
-        // const DealRequestStruct = [
-        //   //cid.bytes ,//cidHex
-        //   cidHexString,
-        //   pieceSize, //taskArgs.pieceSize,
-        //   false, //taskArgs.verifiedDeal,
-        //   commP, //taskArgs.label,
-        //   520000, // startEpoch
-        //   1555200, // endEpoch
-        //   0, // taskArgs.storagePricePerEpoch,
-        //   0, // taskArgs.providerCollateral,
-        //   0, // taskArgs.clientCollateral,
-        //   1, //taskArgs.extraParamsVersion,
-        //   extraParamsV1,
-        // ];
         const DealRequestStruct = [
-          '0x000181e20392202007559549e34c42b38403cfd9e30d99292010e75e8473c4c131c6fa5b04267220',
-          2097152,
-          false,
-          'bafybeicxcclvlid2ocrksh54lub3ny6vd3puic5etjppd2r7g6pcfdxufm',
-          270000,
-          700000,
-          0,
-          0,
-          0, 
-          1,
+          //cid.bytes ,//cidHex
+          cidHexString,
+          pieceSize, //taskArgs.pieceSize,
+          false, //taskArgs.verifiedDeal,
+          commP, //taskArgs.label,
+          520000, // startEpoch
+          1555200, // endEpoch
+          0, // taskArgs.storagePricePerEpoch,
+          0, // taskArgs.providerCollateral,
+          0, // taskArgs.clientCollateral,
+          1, //taskArgs.extraParamsVersion,
           extraParamsV1,
-      ];
+        ];
         
         console.log("here")
         const encodedFunctionCall = daoDealClient.interface.encodeFunctionData("makeDealProposal", [DealRequestStruct]);

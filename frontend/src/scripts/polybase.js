@@ -24,15 +24,17 @@ export async function createUser() {
 }
 
 export async function createProposal(proposalId, language, dataType, informationType, DealRequestStruct) {
-  const {cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, carLink, carSize, tempBool1, tempBool2} = DealRequestStruct;
+  const [cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, extraParams] = DealRequestStruct;
+  const [carLink, carSize, tempBool1, tempBool2] = extraParams;
 
+ 
 
-  // cidHex = cidHex.toString()
-  // pieceSize = pieceSize.toString()
-  // verifiedDeal = verifiedDeal.toString()
-  // label = label.toString()
-  // carLink = carLink.toString()
+  
 
-  await db.collection("Proposal").create([proposalId, language, dataType, informationType, cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, carLink.toString(), carSize]);
+  await db.collection("Proposal").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carLink.toString(), carSize.toString()]);
 }
+
+
+
+
 
