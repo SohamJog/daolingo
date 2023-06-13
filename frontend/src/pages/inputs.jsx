@@ -185,7 +185,7 @@ function Inputs() {
 
         //TODO save the proposalId to Polybase?
           //storeProposalId(proposalId);
-          await createProposal(proposalId, language, dataType, informationType, DealRequestStruct);
+          await createProposal(signer.address, proposalId, language, dataType, informationType, DealRequestStruct);
 
         //End of TODO
 
