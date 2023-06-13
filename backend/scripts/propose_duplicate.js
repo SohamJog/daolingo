@@ -1,5 +1,6 @@
-const { ethers, network } = require("hardhat");
+const { network } = require("hardhat");
 const { DealRequestStruct, PROPOSAL_DESCRIPTION, proposalsFile } = require("../helper-hardhat-config");
+const {ethers} = require("ethers");
 const fs = require("fs");
 
 function storeProposalId(proposalId) {
@@ -26,9 +27,21 @@ function storeProposalId(proposalId) {
 
 async function propose(args, functionToCall, proposalDescription) {
 
-    const governor = await ethers.getContract("GovernorContract");
+    //const governor = await ethers.getContract("GovernorContract");
 
-    const daoDealClient = await ethers.getContract("DaoDealClient");
+   // const daoDealClient = await ethers.getContract("DaoDealClient");
+
+    const governor = new ethers.Contract(
+      governorContractAddress,
+      governorContractABI,
+      signer
+    );
+    const daoDealClient = new ethers.Contract(
+      clientContractAddress,
+      clientContractABI,
+      signer
+    );;
+
     const encodedFunctionCall = daoDealClient.interface.encodeFunctionData(functionToCall, args);
     console.log(`Proposing ${functionToCall} on ${daoDealClient.address} with ${args}`);
     //console.log(`Proposal Description:\n${proposalDescription}`);
@@ -42,7 +55,6 @@ async function propose(args, functionToCall, proposalDescription) {
 
     const proposeReceipt = await proposeTx.wait()
     console.log(proposeReceipt)
-    
     const proposalId = proposeReceipt.events[0].args.proposalId
     console.log(`Proposed with proposal ID:\n  ${proposalId}`)
     const proposalState = await governor.state(proposalId)

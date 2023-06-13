@@ -8,17 +8,22 @@ import governorContract from "../../contracts/GovernorContract.json";
 import clientContract from "../../contracts/DaoDealClient.json";
 import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
+//import { ethers } from "ethers";
 import { ethers } from "ethers";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import Spinner from 'react-bootstrap/Spinner';
 import CID from "cids";
 import { checkWalletIsConnected } from "@/scripts/wallet";
+import { governorContractAddress, daoDealClientAddress } from "@/scripts/aux";
+import { createProposal } from "@/scripts/polybase";
+import { Buffer } from 'buffer';
+
 
  // Replace this address with the address of own instance of the deal client contract
 
-const governorContractAddress = "0x830F3Af3806a21909db89f95beb3a5c1B068e51f";
+//const governorContractAddress = governorContractAddress;
 const governorContractABI = governorContract.abi;
-const clientContractAddress = "0x9bD6578b301F84f454868679ce305f3bd467176B";
+const clientContractAddress = daoDealClientAddress;
 const clientContractABI = clientContract.abi;
 let daoDealClient;
 let dealClient;
@@ -39,7 +44,24 @@ function Inputs() {
   const [txSubmitted, setTxSubmitted] = useState("");
   const [dealID, setDealID] = useState("");
   const [proposingDeal, setProposingDeal] = useState(false);
+  const [language, setLanguage] = useState("");
+  const [dataType, setDataType] = useState("");
+  const [informationType, setInformationType] = useState("");
+
+
   //const [network, setNetwork] = useState("");
+
+  const handleChangeLanguage = (event) => {
+    setLanguage(event.target.value);
+  };
+
+  const handleChangeDataType = (event) => {
+    setDataType(event.target.value);
+  };
+
+  const handleChangeInformationType = (event) => {
+    setInformationType(event.target.value);
+  };
 
   const handleChangeCommP = (event) => {
     setCommP(event.target.value);
@@ -58,43 +80,24 @@ function Inputs() {
     setCarSize(event.target.value);
   };
 
-  /*
-  const handleChangeStartEpoch = (event) => {
-    setStartEpoch(event.target.value);
-  }
-
-  const handleChangeEndEpoch = (event) => {
-    setEndEpoch(event.target.value);
-  }
-  */
+ 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // do something with the carLink value, like send it to a backend API
-    // console.log(commP);
-    // console.log(carLink);
-    // console.log(pieceSize);
-    // console.log(carSize);
-
+  
     try {
       setErrorMessageSubmit(
         ""
       );
-
-      console.log("here");
       cid = new CID(commP);
 
-      
-
       const { ethereum } = window;
-      
       
       if (ethereum) {
 
         const provider = new ethers.BrowserProvider(ethereum);
         const signer = await provider.getSigner();
-
-
 
         daoDealClient = new ethers.Contract(
           clientContractAddress,
@@ -107,9 +110,11 @@ function Inputs() {
           governorContractABI,
           signer
         );
+
+
+
+
         
-
-
         const extraParamsV1 = [
           carLink,
           carSize,
@@ -117,44 +122,75 @@ function Inputs() {
           false, // taskArgs.removeUnsealedCopy
         ];
 
+
+
         //TODO this is the one we have to use
+        const cidHexString = `0x${Buffer.from(cid.bytes).toString('hex')}`;
+
+        // const DealRequestStruct = [
+        //   //cid.bytes ,//cidHex
+        //   cidHexString,
+        //   pieceSize, //taskArgs.pieceSize,
+        //   false, //taskArgs.verifiedDeal,
+        //   commP, //taskArgs.label,
+        //   520000, // startEpoch
+        //   1555200, // endEpoch
+        //   0, // taskArgs.storagePricePerEpoch,
+        //   0, // taskArgs.providerCollateral,
+        //   0, // taskArgs.clientCollateral,
+        //   1, //taskArgs.extraParamsVersion,
+        //   extraParamsV1,
+        // ];
         const DealRequestStruct = [
-          cid.bytes, //cidHex
-          pieceSize, //taskArgs.pieceSize,
-          false, //taskArgs.verifiedDeal,
-          commP, //taskArgs.label,
-          520000, // startEpoch
-          1555200, // endEpoch
-          0, // taskArgs.storagePricePerEpoch,
-          0, // taskArgs.providerCollateral,
-          0, // taskArgs.clientCollateral,
-          1, //taskArgs.extraParamsVersion,
+          '0x000181e20392202007559549e34c42b38403cfd9e30d99292010e75e8473c4c131c6fa5b04267220',
+          2097152,
+          false,
+          'bafybeicxcclvlid2ocrksh54lub3ny6vd3puic5etjppd2r7g6pcfdxufm',
+          270000,
+          700000,
+          0,
+          0,
+          0, 
+          1,
           extraParamsV1,
-        ];
-        // console.log(await provider.getBalance("0x42c930a33280a7218bc924732d67dd84d6247af4"));
-        //console.log(dealClient.interface);
-
-
-        //TODO: change this using propose.js
-
+      ];
         
-        // const transaction = await dealClient.makeDealProposal(
-        //   DealRequestStruct
-        // );
-
+        console.log("here")
         const encodedFunctionCall = daoDealClient.interface.encodeFunctionData("makeDealProposal", [DealRequestStruct]);
+        console.log("here")
+        console.log(`Proposing on ${clientContractAddress} with ${[DealRequestStruct]} `);
+
 
 
         const proposeTx = await governor.propose(
           [clientContractAddress],
           [0],
           [encodedFunctionCall],
-          ""
+          "Let's put this file in Filecoin!"
         )
 
 
         const proposeReceipt = await proposeTx.wait()
-        const proposalId = proposeReceipt.events[0].args.proposalId
+
+        // const logEntry = proposeReceipt.logs[0];
+        // const eventData = logEntry.data;
+        // const eventDataString = Buffer.from(eventData.slice(2), 'hex').toString();
+        // console.log(eventDataString)
+        
+
+        //console.log(proposeReceipt.events)
+        //let filterFrom = governor.filters.Transfer(signer, null);
+
+        // const eventFilter = governor.filters.ProposalCreated(); // Replace "YourEvent" with the actual name of the event you want to retrieve
+
+        // await governor.queryFilter(eventFilter, proposeReceipt.blockNumber, proposeReceipt.blockNumber)
+        //   .then((logs) => {
+        //     console.log(logs);
+        //   });
+
+          console.log(proposeReceipt)
+
+        const proposalId = proposeReceipt.logs[0].args.proposalId
         console.log(`Proposed with proposal ID:\n  ${proposalId}`)
         const proposalState = await governor.state(proposalId)
 
@@ -162,7 +198,11 @@ function Inputs() {
 
         //TODO save the proposalId to Polybase?
           //storeProposalId(proposalId);
+          await createProposal(proposalId, language, dataType, informationType, DealRequestStruct);
+
         //End of TODO
+
+
 
         // the Proposal State is an enum data type, defined in the IGovernor contract.
         // 0:Pending, 1:Active, 2:Canceled, 3:Defeated, 4:Succeeded, 5:Queued, 6:Expired, 7:Executed
@@ -170,19 +210,21 @@ function Inputs() {
 
         // end of TODO
 
-        console.log("Proposing deal...");
-        setProposingDeal(true);
-        const receipt = await transaction.wait();
-        console.log(receipt);
-        setProposingDeal(false);
-        setTxSubmitted("Transaction submitted! " + receipt.hash);
+        // console.log("Proposing deal...");
+        // setProposingDeal(true);
+        // const receipt = await transaction.wait();
+        // console.log(receipt);
+        // setProposingDeal(false);
+        // setTxSubmitted("Transaction submitted! " + receipt.hash);
+
+
 
         //TODO: move this to post voting i'm guessing
 
-        dealClient.on("DealProposalCreate", (id, size, verified, price)=>{
-          console.log(id, size, verified, price);
-        })
-        console.log("Deal proposed! CID: " + cid);
+        // dealClient.on("DealProposalCreate", (id, size, verified, price)=>{
+        //   console.log(id, size, verified, price);
+        // })
+        // console.log("Deal proposed! CID: " + cid);
 
         // end of TODO
 
@@ -199,35 +241,6 @@ function Inputs() {
   };
 
   
-
-  // const connectWalletHandler = () => {
-  //   const { ethereum } = window;
-  //   if (!ethereum) {
-  //     alert("Get MetaMask!");
-  //     return;
-  //   }
-  //   ethereum
-  //     .request({ method: "eth_requestAccounts" })
-  //     .then((accounts) => {
-  //       console.log("Connected", accounts[0]);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
-  // const connectWalletButton = () => {
-  //   return (
-  //     <div style={{ display: "flex" }}> <div className="child-1-cw"> 
-  //     <button
-  //       onClick={connectWalletHandler}
-  //       className="cta-button connect-wallet-button"
-  //     >
-  //       Connect Wallet
-  //     </button>
-  //     { window && <div style={{ color: "green" }}> Connected </div>}
-  //     { network && <div style={{ color: "green" }}> Network: Calibration </div>}
-  //     </div></div>
-  //   );
-  // };
 
   const dealIDButton = () => {
     return (
@@ -267,12 +280,6 @@ function Inputs() {
 
   return (
     <div id="container" className="bg-black flex flex-col items-center ">
-
-    {/* <div className="flex justify-center">
-      <div className="child-1-cw">
-        {connectWalletButton()}
-      </div>
-    </div> */}
   
     <form className="my-32 child-1 bg-white p-8 rounded shadow-lg w-5/12" onSubmit={handleSubmit}>
   
@@ -321,6 +328,14 @@ function Inputs() {
       </div>
   
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={carSize} onChange={handleChangeCarSize} />
+
+     <div> <label className="mb-1">Language</label></div>
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={language} onChange={handleChangeLanguage} />
+      <div> <label className="mb-1">Data Type</label></div>
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={dataType} onChange={handleChangeDataType} />
+      <div> <label className="mb-1">Information Type</label></div>
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={informationType} onChange={handleChangeInformationType} />
+
   
       <button type="submit" className="block bg-teal-500 text-white text-center rounded px-4 py-2 w-full mb-4 hover:bg-teal-600 transition-colors">
         Propose!

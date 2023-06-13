@@ -17,7 +17,7 @@ const extraParamsV1 = [
 ]
 
 const DealRequestStruct = [
-    '0x000181e20392202007554549d24e42b38403cbd9d30d30299010c75e8473c4a131c6fa5b04267220',
+    '0x000181e20392202007556549d24e42b38403cbd9d30d99292010c75e8473c4a131c6fa5b04267220',
     2097152,
     false,
     'bafybeicxcclvlid2ocrksh52lub3ny6vd3muic5etjppd2r7g6pcfdxufm',

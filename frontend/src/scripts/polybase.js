@@ -23,4 +23,16 @@ export async function createUser() {
 
 }
 
+export async function createProposal(proposalId, language, dataType, informationType, DealRequestStruct) {
+  const {cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, carLink, carSize, tempBool1, tempBool2} = DealRequestStruct;
+
+
+  // cidHex = cidHex.toString()
+  // pieceSize = pieceSize.toString()
+  // verifiedDeal = verifiedDeal.toString()
+  // label = label.toString()
+  // carLink = carLink.toString()
+
+  await db.collection("Proposal").create([proposalId, language, dataType, informationType, cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, carLink.toString(), carSize]);
+}
 

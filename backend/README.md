@@ -1,68 +1,55 @@
-# FEVM-Data-DAO-Kit
-
-This is a beta kit to demo how to build a basic Decentralized Autonomous Organization (DAO) on Filecoin. Currently, this kit contains these [OpenZeppelin contracts](https://docs.openzeppelin.com/contracts/4.x/governance): Timelock.sol, Governor.sol, and ERC20Votes. These contracts are used in conjuction with the [Filecoin Client Contract](https://github.com/filecoin-project/fvm-starter-kit-deal-making) to create a DAO that can vote on whether to propose a specific storage deal. This initial version is based on Patrick Collin's excellent repo and tutorial so be sure to check them out to learn more about how this DAO template works!
-
-* [Video](https://www.youtube.com/watch?v=AhJtmUqhAqg)
-* [Original Repo](https://github.com/PatrickAlphaC/dao-template)
-
-## Cloning the Repo
-
-Open up your terminal (or command prompt) and navigate to a directory you would like to store this code on. Once there type in the following command:
-
-
-```
-git clone  https://github.com/filecoin-project/fevm-data-dao-kit.git
-cd fevm-data-dao-kit
-yarn install
-```
-
-
-This will clone the data dao kit onto your computer, switch directories into the newly installed kit, and install the dependencies the kit needs to work.
-
-## Get a Private Key
-
-You can get a private key from a wallet provider [such as Metamask](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key).
+ yarn hardhat deploy
+yarn run v1.22.19
+warning ../../package.json: No license field
+$ /Users/sohamjog/Desktop/backend/node_modules/.bin/hardhat deploy
+Nothing to compile
+failed to get chainId, falling back on net_version...
+reusing "DataGovernanceToken" at 0xE5592aBe3138de7F47cDbce042662C961d7949B4
+Checkpoints 1
+Delegated to deployer wallet!
+deploying "TimeLock" (tx: 0x0222bc21a6b1dd8e4b8322f0a060c192a758e13f1904ea0cd485d7f05380be9b)...: deployed at 0x4b376548e8EaB56ebB1932F76aEc17Edf6C4Fc38 with 84802296 gas
+deploying "GovernorContract" (tx: 0x307ba46a7399d1bbb4ad85233f30981d3546d834be30e684b93a2a99ac82681c)...: deployed at 0x893001108fc0dfb02B5caB21236e5752A22ED7f1 with 122037260 gas
+Setting roles in TimeLock.sol
+Roles in TimeLock.sol set!
+deploying "DaoDealClient" (tx: 0x7b3ede1f9e5b5fd23750cd14760d7e16159e2832ff654262ea2719852a8cdeb4)...: deployed at 0xa69159D81E2AF9434a18C6a14Fc573e30489C22A with 147752590 gas
+Transferring DaoDealClient Owner to TimeLock.sol
+Ownership transferred
+✨  Done in 628.80s.
 
 
-## Add your Private Key as an Environment Variable
-
-Add your private key as an environment variable by running this command:
-
- ```
-export PRIVATE_KEY='abcdef'
-```
-
-If you use a .env file, don't commit and push any changes to .env files that may contain sensitive information, such as a private key! If this information reaches a public GitHub repository, someone can use it to check if you have any Mainnet funds in that wallet address, and steal them!
-
-## Fund the Deployer Address
-
-Go to the [Calibration testnet faucet](https://faucet.calibration.fildev.network/), and paste in the Ethereum address from the previous step. This will send some Calibration testnet FIL to the account.
-
-## Deploy the Contracts
-
-Currently there are 4 contracts in this repo:
-
-* DAO Deal Client: This is the [Filecoin Client Contract](https://github.com/filecoin-project/fvm-starter-kit-deal-making) which can propose deals to storage miners. This contract uses the [OpenZeppelin Ownable.sol contract](https://docs.openzeppelin.com/contracts/2.x/access-control#ownership-and-ownable) to switch the owner of this DealClient to be TimeLock.sol on deployment.
-
-* Data Governance Token: This contract mints [OpenZeppelin ERC20Votes](https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes) token which are used to vote on DAO proposals (or delegate another person to vote on your behalf).
-
-* Governor Contract: This contract, based on the [OpenZeppelin Governor contract](https://docs.openzeppelin.com/contracts/4.x/api/governance#Governor), manages proposals and votes. This is the "heart" of the DAO.
-
-* Time Lock: This contract, based on the [OpenZeppelin TimeLock contract](https://blog.openzeppelin.com/protect-your-users-with-smart-contract-timelocks/), creates a buffer between when proposals are passed and queued and when they can be executed. This allows gives users time to leave the DAO if a proposal that they don't agree with is passed.
 
 
-Type in the following command in the terminal to deploy all contracts:
+{
+    "_type": "TransactionReceipt",
+    "blockHash": "0xf9ea6482967be6de759b721ce21a157b6f90c5feea190e1a96a25bafe0a3188e",
+    "blockNumber": 641354,
+    "contractAddress": null,
+    "cumulativeGasUsed": "0",
+    "from": "0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1",
+    "gasPrice": "249426",
+    "gasUsed": "18973652",
+    "hash": "0x9fc736f19a7b5237ea8a5c366ec1bcff70209b709607982e669d6ab0472a1f71",
+    "index": 1,
+    "logs": [
+        {
+            "_type": "log",
+            "address": "0x893001108fc0dfb02B5caB21236e5752A22ED7f1",
+            "blockHash": "0xf9ea6482967be6de759b721ce21a157b6f90c5feea190e1a96a25bafe0a3188e",
+            "blockNumber": 641354,
+            "data": "0x3e8bf320118c94e37216d477a61c1744df324f8651952966e1ca91d472ef84a5000000000000000000000000918e61236ac6fbb5eaa57a88709e2fa43e932de10000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000009c94f000000000000000000000000000000000000000000000000000000000009c9b300000000000000000000000000000000000000000000000000000000000005e00000000000000000000000000000000000000000000000000000000000000001000000000000000000000000a69159d81e2af9434a18c6a14fc573e30489c22a00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000364dd27fe90000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c0000000000000000000000000000000000000000000000000000000000007ef40000000000000000000000000000000000000000000000000000000000017bb000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000022000000000000000000000000000000000000000000000000000000000000000270181e203922020058a1f7b16a3173285efa236e43c0debb99672020fa800a47190cdcd60c7103f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040626167613665613473656171616c637137706d6c6b67667a7371787832656e786568716736786f6d776f696261376b61617572797a62746f6e6d6464726170790000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000001a1bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006f68747470733a2f2f646174612d6465706f742e6c69676874686f7573652e73746f726167652f6170692f646f776e6c6f61642f646f776e6c6f61645f6361723f66696c6549643d61663864356466322d646536612d346636362d623166632d6530663862653230323132302e63617200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000204c657427732070757420746869732066696c6520696e2046696c65636f696e21",
+            "index": 0,
+            "topics": [
+                "0x7d84a6263ae0d98d3329bd7b46bb4e8d6f98cd35a7adb45c274c8b7fd5ebd5e0"
+            ],
+            "transactionHash": "0x9fc736f19a7b5237ea8a5c366ec1bcff70209b709607982e669d6ab0472a1f71",
+            "transactionIndex": 1
+        }
+    ],
+    "logsBloom": "0xa597c78db14ccd8a54ec1fcff296f8e6fb0a03d257526a3948ddfa52b4021052c89af0024687e2ab09ddc20a47e6eff2c853f1544706b1a2d5739b3a342e26785076f216420e06996a9b234cd5bf4a921bf3a105f4873090472a02539eb2e6c0ade6e241470ddffdb24c455af800c988f4aa28c3fba9472dc1506ed65e1649f257b79166f9558ff34337164c48f54c36dcf25beda8c5cde26c9e478c81d8040c7b86aee591e9a20de315190271ce8b0628457a4157c2c66469ba5f4d0c03eb43fcf41f6fdb5a4434151a237223af722e8976fcf2851ee1b13bb57b3fd36bec36b1dd61a7c952215c0ef2071069689212e8645ae25996bf55975d7c8c92fb4dff",
+    "root": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "status": 1,
+    "to": "0x893001108fc0dfb02B5caB21236e5752A22ED7f1"
+}
 
- ```
-yarn hardhat deploy
-```
 
-This will compile all the contracts in the contracts folder and deploy them automatically! The deployments scripts can be found in the deploy folder. This should also generate a deployments directory which can referenced for the address and details of each deployment.
-
-## Preparing Data for Storage
-
-Before storing a file with a storage provider, it needs to be prepared by turning it into a .car file and the metadata must be recorded. To do this, the hardhat kit has a [tool submodule](https://github.com/filecoin-project/fevm-hardhat-kit/tree/main/tools), written in the language Go, which can do this for you. You can also use the [FVM Data Depot website](https://data.lighthouse.storage/) will automatically convert files to the .car format, output all the necessary metadata, and act as an HTTP retrieval point for the storage providers.
-
-### How the Client Contract Works
-
-The client contract is an example contract that uses the Filecoin.sol API's to create storage deals via Solidity smart contracts on Filecoin. This works by emitting a Solidity event that [Boost storage providers](https://boost.filecoin.io/) can listen to. To learn more about this contract feel free to [checkout the app kit repo](https://github.com/filecoin-project/fvm-starter-kit-deal-making) which includes a detailed readme and a frontend.
+use getPastEvents to get the logs and the id of the proposal
