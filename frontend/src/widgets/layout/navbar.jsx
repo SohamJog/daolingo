@@ -8,7 +8,7 @@ import {
   Button,
   IconButton,
 } from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon, ArrowUpOnSquareIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, ArrowUpOnSquareIcon, MegaphoneIcon, BuildingLibraryIcon } from "@heroicons/react/24/outline";
 import { connectWalletHandler } from "../../scripts/wallet";
 
 export function Navbar({ brandName, routes, action }) {
@@ -53,6 +53,22 @@ export function Navbar({ brandName, routes, action }) {
           >
             <MegaphoneIcon className="w-6 h-6 opacity-75 mr-1" />
             Current Proposals
+          </Link>
+        </Typography>
+
+        <Typography
+          as="li"
+          variant="small"
+          color="inherit"
+          className="capitalize"
+        >
+          <Link
+            to="/archive"
+            target="_blank"
+            className="flex items-center gap-1 p-1 font-normal"
+          >
+            <BuildingLibraryIcon className="w-6 h-6 opacity-75 mr-1" />
+            Archive
           </Link>
         </Typography>
 

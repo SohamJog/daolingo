@@ -11,5 +11,7 @@ export { default as Profile } from "@/pages/profile";
 export { default as SignIn } from "@/pages/sign-in";
 export { default as SignUp } from "@/pages/sign-up";
 export {default as VoterPage} from "@/pages/voterpage";
+export {default as Admin} from "@/pages/admin";
+export {default as Archive} from "@/pages/archive";
 
 

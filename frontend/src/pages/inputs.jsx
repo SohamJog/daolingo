@@ -299,7 +299,7 @@ function Inputs() {
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={carLink} onChange={handleChangeCarLink} />
   
       <div className="child-1-hg mb-4">
-        <label className="mb-1">commP</label>
+        <label className="mb-1">Piece CID</label>
   
         <div className="tooltip" data-tooltip-id="commp-tooltip" data-tooltip-delay-hide={50} data-tooltip-html="This is also known as the Piece CID.<br />You can go to data.fvm.dev and get this by uploading your file (site in development).<br />This also can be accessed as the output of tech-greedy/generate-car.">
           <AiOutlineQuestionCircle />
@@ -331,11 +331,11 @@ function Inputs() {
   
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={carSize} onChange={handleChangeCarSize} />
 
-     <div> <label className="mb-1">Language</label></div>
+     <div> <label className="mb-1">Language Name</label></div>
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={language} onChange={handleChangeLanguage} />
-      <div> <label className="mb-1">Data Type</label></div>
+      <div> <label className="mb-1">Data Type. (Eg. PDF, Audio, JSON, collection of PDFs, etc.)</label></div>
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={dataType} onChange={handleChangeDataType} />
-      <div> <label className="mb-1">Information Type</label></div>
+      <div> <label className="mb-1">Information Type. (Eg. Dictionary, Book, Misc)</label></div>
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={informationType} onChange={handleChangeInformationType} />
 
 

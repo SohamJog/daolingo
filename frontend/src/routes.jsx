@@ -1,4 +1,4 @@
-import { Home, Profile, SignIn, SignUp, Inputs, VoterPage } from "@/pages";
+import { Home, Profile, SignIn, SignUp, Inputs, VoterPage, Archive, Admin } from "@/pages";
 
 import {
   HomeIcon,
@@ -20,6 +20,18 @@ export const routes = [
     name: "voterpage",
     path: "/voterpage",
     element: <VoterPage />,
+  },
+  {
+    icon: HomeIcon,
+    name: "admin",
+    path: "/admin",
+    element: <Admin />,
+  },
+  {
+    icon: HomeIcon,
+    name: "archive",
+    path: "/archive",
+    element: <Archive />,
   },
   {
     icon: UserCircleIcon,
