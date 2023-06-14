@@ -35,10 +35,10 @@ const Archive = () => {
 
 
         <h2 className="my-10 text-4xl font-bold text-white text-center">Archive</h2>
-        <div className="flex flex-col justify-center items-center my-10">
+        <div className="flex flex-col justify-center items-center my-10 w-9/12">
         
           {data.map((item, index) => (
-              <div key={index} className="w-8/12 bg-white text-black p-6 rounded shadow my-4 w-96">
+              <div key={index} className="w-9/12 bg-white text-black p-6 rounded shadow my-4 w-96">
               <div className="grid grid-cols-2 gap-4">
                 <p className="font-bold">Language:</p>
                 <p>{item.language}</p>
