@@ -4,14 +4,17 @@ import { vote } from '@/scripts/aux';
 import { ethers } from "ethers";
 
 import governorContract from "../../contracts/GovernorContract.json";
+import dataGovernanceToken from "../../contracts/DataGovernanceToken.json";
 
 
 const VoterPage = () => {
   // Dummy data
   const [data, setData] = useState([]);
+  const [tokens, setTokens] = useState(0);
 
 
   useEffect(() => {
+    getTokens();
     getProposals();
   }, []);
 
@@ -19,6 +22,29 @@ const VoterPage = () => {
     const proposals = await getAllProposals();
     setData(proposals);
   }
+
+  async function getTokens() {
+    const { ethereum } = window;
+    if (!ethereum) {
+      return;
+    }
+    try {
+      const provider = new ethers.BrowserProvider(ethereum);
+      const signer = await provider.getSigner();
+      const token = new ethers.Contract(
+        dataGovernanceToken.address,
+        dataGovernanceToken.abi,
+        signer
+      );
+      const balance = await token.balanceOf(signer.getAddress());
+      setTokens(balance.toString());
+    } catch (error) {
+      console.log('Error getting tokens', error);
+    }
+  }
+
+
+
 
   const handleVoteFor = async (proposalId) => {
     console.log(proposalId)
@@ -76,8 +102,16 @@ const VoterPage = () => {
       />
 
       <div className="relative z-10 bg-black bg-opacity-75 py-16">
+      
+
+
+
         <h2 className="my-10 text-4xl font-bold text-white text-center">Current Proposals</h2>
         <div className="flex flex-col justify-center items-center my-10">
+        <div className="bg-gray-200 p-6 rounded shadow-lg my-4 w-96 transform transition-transform duration-300 hover:scale-105">
+  <p className="text-2xl font-semibold mb-2">Your Voting Power:</p>
+  <p className="text-2xl font-bold text-black">{tokens}</p>
+</div>
           {data.map((item, index) => (
             <div key={index} className="bg-white text-black p-6 rounded shadow my-4 w-96">
               <div className="grid grid-cols-2 gap-4">

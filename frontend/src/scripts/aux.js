@@ -6,10 +6,14 @@ export const daoDealClientAddress = "0xa69159D81E2AF9434a18C6a14Fc573e30489C22A"
 
 
 
+export async function getTokenBalance(dataGovernanceToken, address) {
+  
+  const balance = await dataGovernanceToken.balanceOf(address)
+  return balance
+}
+
 export async function vote(governor, voteWay, proposalId, reason) {
   console.log("Voting...")
-
-
 
   const voteTx = await governor.castVoteWithReason(proposalId, voteWay, reason);
   const voteTxReceipt = await voteTx.wait(1);
@@ -18,3 +22,4 @@ export async function vote(governor, voteWay, proposalId, reason) {
   console.log(`Current Proposal State: ${proposalState}`);
   
 }
+

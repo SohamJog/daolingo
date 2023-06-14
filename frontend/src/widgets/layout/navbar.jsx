@@ -8,7 +8,7 @@ import {
   Button,
   IconButton,
 } from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, ArrowUpOnSquareIcon, MegaphoneIcon } from "@heroicons/react/24/outline";
 import { connectWalletHandler } from "../../scripts/wallet";
 
 export function Navbar({ brandName, routes, action }) {
@@ -22,60 +22,56 @@ export function Navbar({ brandName, routes, action }) {
   }, []);
 
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {routes.map(({ name, path, icon, href, target }) => (
-        <Typography
-          key={name}
+    <div>
+    <ul className="mx-4 mb-4 mt-2 flex flex-row gap-2 text-inherit lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+       <Typography
           as="li"
           variant="small"
           color="inherit"
           className="capitalize"
         >
-          {href ? (
-            <a
-              href={href}
-              target={target}
-              className="flex items-center gap-1 p-1 font-normal"
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
-                })}
-              {name}
-            </a>
-          ) : (
-            <Link
-              to={path}
-              target={target}
-              className="flex items-center gap-1 p-1 font-normal"
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-[18px] h-[18px] opacity-75 mr-1",
-                })}
-              {name}
-            </Link>
-          )}
+          <Link
+            to="/inputs"
+            target="_blank"
+            className="flex items-center gap-1 p-1 font-normal"
+          >
+            <ArrowUpOnSquareIcon className="w-6 h-6 opacity-75 mr-1" />
+            Contribute
+          </Link>
         </Typography>
-      ))}
+
+        <Typography
+          as="li"
+          variant="small"
+          color="inherit"
+          className="capitalize"
+        >
+          <Link
+            to="/voterpage"
+            target="_blank"
+            className="flex items-center gap-1 p-1 font-normal"
+          >
+            <MegaphoneIcon className="w-6 h-6 opacity-75 mr-1" />
+            Current Proposals
+          </Link>
+        </Typography>
+
+      
     </ul>
+    </div>
   );
 
   return (
-    <MTNavbar color="transparent" className="p-3">
+    <MTNavbar color="transparent" className="p-3 pt-6 bg-black/75">
       <div className="container mx-auto flex items-center justify-between text-white ">
         <Link to="/">
-          <Typography className="mr-4 ml-2 cursor-pointer py-1.5 font-bold text-2xl">
+          <Typography className="mr-4 ml-2 cursor-pointer py-1.5 font-bold text-4xl text-white tracking-wider uppercase">
             {brandName}
           </Typography>
         </Link>
-        <div className="hidden lg:block">{}</div>
+        
         <div className="hidden gap-2 lg:flex">
-         
-         
-            
-            
-          
+          {navList}
           {React.cloneElement(action, {
             className: "hidden lg:inline-block text-2xl",
           })}
@@ -99,9 +95,10 @@ export function Navbar({ brandName, routes, action }) {
         open={openNav}
       >
         <div className="container mx-auto">
-          {}
-          
-          
+          {navList}
+          {React.cloneElement(action, {
+            className: "w-full mt-4",
+          })}
         </div>
       </MobileNav>
     </MTNavbar>
@@ -111,12 +108,9 @@ export function Navbar({ brandName, routes, action }) {
 Navbar.defaultProps = {
   brandName: "DAOLINGO",
   action: (
-    
-      <Button variant="gradient" size="sm" fullWidth 
-      onClick={connectWalletHandler}>
-        Connect Wallet
-      </Button>
-    
+    <Button variant="gradient" size="sm" fullWidth onClick={connectWalletHandler}>
+      Connect Wallet
+    </Button>
   ),
 };
 

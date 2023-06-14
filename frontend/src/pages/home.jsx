@@ -15,16 +15,10 @@ import { PageTitle, Footer } from "@/widgets/layout";
 import { FeatureCard, TeamCard } from "@/widgets/cards";
 import { featuresData, teamData, contactData } from "@/data";
 import { createUser } from "../scripts/polybase.js";
-import { ethers } from "ethers";
-
 
 
 
 export function Home() {
-  
-
- 
- 
 
   return (
     <>
@@ -64,20 +58,33 @@ export function Home() {
     </div>
 
       <section className="-mt-32 bg-gray-50 px-4 pb-20 pt-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="container mx-auto">
+
+
+      <div className="mx-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
             {featuresData.map(({ color, title, icon, description }) => (
+              <> 
               <FeatureCard
                 key={title}
                 color={color}
                 title={title}
                 icon={React.createElement(icon, {
-                  className: "w-5 h-5 text-white",
+                  className: "w-5 h-5 text-white ",
                 })}
                 description={description}
+                className="transition duration-300 ease-in-out transform hover:scale-110"
               />
+              </>
             ))}
           </div>
+
+
+
+
+
+
+
+
           <div className="mt-32 flex flex-wrap items-center">
             <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white p-3 text-center shadow-lg">
@@ -86,56 +93,35 @@ export function Home() {
 
 
               </div>
-              <Typography
-                variant="h3"
-                className="mb-3 font-bold"
-                color="blue-gray"
-              >
-                Become a part of a revolution
-              </Typography>
-              <Typography className="mb-8 font-normal text-blue-gray-500">
-              Contribute to the expansive archive of languages, preserving and safeguarding linguistic heritage for future generations. Join a passionate community dedicated to language preservation, revitalization, and research. Explore diverse linguistic traditions, connect with fellow language enthusiasts, and embark on a journey of discovery. Unleash your curiosity, share your expertise, and make a lasting impact on the world of languages. Together, we can build a vibrant and inclusive linguistic tapestry that celebrates the richness and diversity of human communication. Join us today and be a catalyst for the language revolution.
-
-
-              </Typography>
-              <Button variant="outlined">read more</Button>
-              
-              <div>
-              <Button variant="outlined" onClick={createUser}>
-                Generate User
-              </Button>
+              <div className="text-center">
+                <Typography
+                  variant="h3"
+                  className="mb-3 font-bold text-4xl text-blue-gray-700 transition duration-500 ease-in-out transform hover:scale-110"
+                >
+                  Become a part of a revolution
+                </Typography>
+                <Typography className="mb-8 font-normal text-lg text-blue-gray-500">
+                  Contribute to the expansive archive of languages, preserving and safeguarding linguistic heritage for future generations. Join a passionate community dedicated to language preservation, revitalization, and research. Explore diverse linguistic traditions, connect with fellow language enthusiasts, and embark on a journey of discovery. Unleash your curiosity, share your expertise, and make a lasting impact on the world of languages. Together, we can build a vibrant and inclusive linguistic tapestry that celebrates the richness and diversity of human communication. Join us today and be a catalyst for the language revolution.
+                </Typography>
+                <Button
+                  variant="outlined"
+                  className="px-6 py-3 mx-3 font-bold text-lg text-white bg-blue-900 hover:bg-blue-300 transition duration-300"
+                >
+                  Join Now
+                </Button>
+                <Button
+                  variant="outlined"
+                  className="px-6 py-3 mx-3 font-bold text-lg text-white bg-blue-900 hover:bg-blue-300 transition duration-300"
+                >
+                  Join Now
+                </Button>
+              </div>
+                        
             </div>
 
 
-              
-            </div>
-
-
-            <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
-              <Card className="shadow-lg shadow-gray-500/10">
-                <CardHeader className="relative h-56">
-                  <img
-                    alt="Card Image"
-                    src="/img/teamwork.jpeg"
-                    className="h-full w-full"
-                  />
-                </CardHeader>
-                <CardBody>
-                  <Typography
-                    variant="h5"
-                    color="blue-gray"
-                    className="mb-3 font-bold"
-                  >
-                    Top Notch Services
-                  </Typography>
-                  <Typography className="font-normal text-blue-gray-500">
-                    The Arctic Ocean freezes every winter and much of the
-                    sea-ice then thaws every summer, and that process will
-                    continue whatever happens.
-                  </Typography>
-                </CardBody>
-              </Card>
-            </div>
+            
+            
           </div>
         </div>
       </section>

@@ -41,7 +41,7 @@ function Inputs() {
   const [errorMessageSubmit, setErrorMessageSubmit] = useState("");
   const [pieceSize, setPieceSize] = useState("32768");
   const [carSize, setCarSize] = useState("18445");
-  const [txSubmitted, setTxSubmitted] = useState("");
+  const [txSubmitted, setTxSubmitted] = useState(false);
   const [dealID, setDealID] = useState("");
   const [proposingDeal, setProposingDeal] = useState(false);
   const [language, setLanguage] = useState("");
@@ -80,12 +80,14 @@ function Inputs() {
     setCarSize(event.target.value);
   };
 
- 
+ async function changeProposing() {
+    setProposingDeal(true);
+ }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // do something with the carLink value, like send it to a backend API
-  
+    await changeProposing();
     try {
       setErrorMessageSubmit(
         ""
@@ -194,6 +196,9 @@ function Inputs() {
         // the Proposal State is an enum data type, defined in the IGovernor contract.
         // 0:Pending, 1:Active, 2:Canceled, 3:Defeated, 4:Succeeded, 5:Queued, 6:Expired, 7:Executed
         console.log(`Current Proposal State: ${proposalState}`)
+        setProposingDeal(false);
+        setTxSubmitted(true)
+
 
         // end of TODO
 
@@ -229,37 +234,7 @@ function Inputs() {
 
   
 
-  const dealIDButton = () => {
-    return (
-      <button
-        onClick={dealIDHandler}
-      >
-        Get deal ID
-      </button>
-    );
-  };
-
-  const dealIDHandler = async () => {
-    setDealID("Waiting for acceptance by SP...");
-    cid = new CID(commP);
-    var refresh = setInterval(async () => {
-        console.log(cid.bytes);
-        if (cid === undefined) {
-          setDealID("Error: CID not found");
-          clearInterval(refresh);
-        }
-        console.log("Checking for deal ID...");
-        const dealID = await dealClient.pieceDeals(cid.bytes);
-        console.log(dealID);
-        if (dealID !== undefined && dealID !== "0") {
-          // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
-          // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
-          setDealID("https://calibration.filfox.info/en/deal/" + dealID);
-          clearInterval(refresh);
-        }
-      }, 5000
-    );
-  };
+  
 
   useEffect(() => {
     checkWalletIsConnected();
@@ -267,8 +242,48 @@ function Inputs() {
 
   return (
     <div id="container" className="bg-black flex flex-col items-center ">
+
+
+
+
+        <div className="mt-32 text-white">
+          <div className="flex items-center mb-4">
+            <div className="step-number bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              1
+            </div>
+            <div>
+              Go to <a href="https://data.lighthouse.storage/dashboard" className="text-teal-500">lighthouse.storage</a>
+            </div>
+          </div>
+          <div className="flex items-center mb-4">
+            <div className="step-number bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              2
+            </div>
+            <div>
+              Upload your file to lighthouse.storage, it's like a temporary storage for your file.
+            </div>
+          </div>
+          <div className="flex items-center mb-4">
+            <div className="step-number bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              3
+            </div>
+            <div>
+              Put in the car link and some other info in this form. You will get this info when you click on your uploaded file in lighthouse.storage.
+            </div>
+          </div>
+          <div className="flex items-center">
+            <div className="step-number bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              4
+            </div>
+            <div>
+              Click propose! We'll notify you when your proposal has passed!
+            </div>
+          </div>
+        </div>
+
+
   
-    <form className="my-32 child-1 bg-white p-8 rounded shadow-lg w-5/12" onSubmit={handleSubmit}>
+    <form className="my-16 child-1 bg-white p-8 rounded shadow-lg w-5/12" onSubmit={handleSubmit}>
   
       <div className="child-1-hg mb-4">
         <label className="mb-1">Link to CAR file</label>
@@ -323,10 +338,16 @@ function Inputs() {
       <div> <label className="mb-1">Information Type</label></div>
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={informationType} onChange={handleChangeInformationType} />
 
+
   
-      <button type="submit" className="block bg-teal-500 text-white text-center rounded px-4 py-2 w-full mb-4 hover:bg-teal-600 transition-colors">
-        Propose!
+      <button
+        type="submit"
+        className="block bg-teal-500 text-white text-center rounded px-4 py-2 w-full mb-4 hover:bg-teal-600 transition-colors"
+        disabled={proposingDeal}
+      >
+        {proposingDeal ? "Proposing..." : (txSubmitted ? "You're all set!" : "Propose!")}
       </button>
+
   
       <div className="text-red-500 mb-2">{errorMessageSubmit}</div>
       {proposingDeal && (
@@ -337,11 +358,7 @@ function Inputs() {
       <div className="text-green-500 mb-2">{txSubmitted}</div>
     </form>
   
-    <div className="child-1-hg">
-      <div className="flex w-1/2 mx-auto">
-        {dealIDButton()}
-      </div>
-    </div>
+   
   
     {dealID && <div className="text-green-500 mx-auto">Deal: {dealID}</div>}
   </div>
