@@ -30,6 +30,23 @@ export async function createProposal(proposer, proposalId, language, dataType, i
 }
 
 
+export async function createArchive(DealRequestStruct, proposalId) {
+  console.log('Creating archive...')
+
+  const collectionReference = db.collection("Proposal");
+  const record = await collectionReference.record(proposalId).get();
+  const proposer = record.data.proposer;
+  const language = record.data.language;
+  const dataType = record.data.dataType;
+  const informationType = record.data.informationType;
+
+  const [cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, extraParams] = DealRequestStruct;
+  const [carLink, carSize, tempBool1, tempBool2] = extraParams;
+
+  await db.collection("Archive").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carSize.toString(), proposer.toString()]);
+  console.log('Created archive!')
+}
+
 export async function getAllProposals() {
   const temp = await db.collection("Proposal").get();
   let proposals = []
@@ -41,10 +58,66 @@ export async function getAllProposals() {
   return proposals
 }
 
+export async function getAllArchives() {
+  const temp = await db.collection("Archive").get();
+  let proposals = []
+  for (let i = 0; i < temp.data.length; i++) {
+    //console.log(temp.data[i].data)
+    proposals.push(temp.data[i].data)
+  }
+  //console.log( proposals)
+  return proposals
+}
 
-//getAllProposals()
+
+export async function deleteProposal(proposalId) {
+  const collectionReference = db.collection("Proposal");
+  await collectionReference.record(proposalId).call("del");
+  console.log("Deleted proposal!")
+}
+
+export async function getProposalParams(proposalId) {
+  const collectionReference = db.collection("Proposal");
+  const record = await collectionReference.record(proposalId).get();
+  //console.log(record.data)
+  const DealRequestStruct =[
+    record.data.cidHex,
+    record.data.pieceSize,
+    (record.data.verifiedDeal == "true"),
+    record.data.label,
+    Number(record.data.startEpoch),
+    Number(record.data.endEpoch),
+    Number(record.data.storagePricePerEpoch),
+    Number(record.data.providerCollateral),
+    Number(record.data.clientCollateral),
+    1,
+    [record.data.carLink, Number(record.data.carSize), false, false]
+  ]
+  console.log(DealRequestStruct)
+}
+
+//getProposalParams("24923000271803792251928267856477390263985430244943514007382740670081887006376");
+
+// createArchive(
+//   [
+//     '0x0181e203922020dd727923d73fc56d3c925b4d7f7919a1ec4d3b2c0af9383978a1c358e7f3d118',
+//     '262144',
+//     false,
+//     'baga6ea4seaqn24tzeplt7rlnhsjfwtl7pem2d3cnhmwav6jyhf4kdq2y47z5cga',
+//     520000,
+//     1555200,
+//     0,
+//     0,
+//     0,
+//     1,
+//     [
+//       'https://data-depot.lighthouse.storage/api/download/download_car?fileId=a06b3587-9cf6-4b0d-b326-f6866cfdbc1c.car',
+//       202867,
+//       false,
+//       false
+//     ]
+//   ], "48765461197497924543818806022063248975949937292401964872751984310560292309794"
+// )
 
 
-
-
-
+//deleteProposal("48765461197497924543818806022063248975949937292401964872751984310560292309794")

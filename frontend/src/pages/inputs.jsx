@@ -202,12 +202,7 @@ function Inputs() {
 
         // end of TODO
 
-        // console.log("Proposing deal...");
-        // setProposingDeal(true);
-        // const receipt = await transaction.wait();
-        // console.log(receipt);
-        // setProposingDeal(false);
-        // setTxSubmitted("Transaction submitted! " + receipt.hash);
+
 
 
 
