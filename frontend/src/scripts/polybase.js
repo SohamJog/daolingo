@@ -98,6 +98,29 @@ export async function getProposalParams(proposalId) {
   console.log(DealRequestStruct)
 }
 
+export async function createProfile(wallet) {
+  const collectionReference = db.collection("Profile");
+  //keep id = public key
+  await collectionReference.create([wallet, wallet]);
+}
+
+export async function addContribution(wallet, contribution) {
+  const collectionReference = db.collection("Profile");
+  await collectionReference.record(wallet).call("addContribution", [contribution]);
+}
+
+export async function getContributions(wallet) {
+  const collection = db.collection("Profile").record(wallet).get();
+  const contributions = collection.data.contributions;
+  return contributions;
+}
+
+export async function getNumberOfContributions(wallet) {
+  const collection = db.collection("Profile").record(wallet).get();
+  const contributions = collection.data.contributions;
+  return contributions.length;
+}
+
 //getProposalParams("24923000271803792251928267856477390263985430244943514007382740670081887006376");
 
 // createArchive(
