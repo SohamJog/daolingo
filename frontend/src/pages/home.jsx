@@ -108,12 +108,7 @@ export function Home() {
                 <Typography className="mb-8 font-normal text-lg text-blue-gray-500">
                   Contribute to the expansive archive of languages, preserving and safeguarding linguistic heritage for future generations. Join a passionate community dedicated to language preservation, revitalization, and research. Explore diverse linguistic traditions, connect with fellow language enthusiasts, and embark on a journey of discovery. Unleash your curiosity, share your expertise, and make a lasting impact on the world of languages. Together, we can build a vibrant and inclusive linguistic tapestry that celebrates the richness and diversity of human communication. Join us today and be a catalyst for the language revolution.
                 </Typography>
-                <Button
-                  variant="outlined"
-                  className="px-6 py-3 mx-3 font-bold text-lg text-white bg-blue-900 hover:bg-blue-300 transition duration-300"
-                >
-                  Join Now
-                </Button>
+                
                 <Button
                   variant="outlined"
                   className="px-6 py-3 mx-3 font-bold text-lg text-white bg-blue-900 hover:bg-blue-300 transition duration-300"

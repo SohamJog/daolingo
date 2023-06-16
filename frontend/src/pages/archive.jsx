@@ -36,43 +36,44 @@ const Archive = () => {
 
         <h2 className="my-10 text-4xl font-bold text-white text-center">Archive</h2>
         <div className="flex flex-col justify-center items-center my-10 w-9/12">
-        
-          {data.map((item, index) => (
-              <div key={index} className="w-9/12 bg-white text-black p-6 rounded shadow my-4 w-96">
-              <div className="grid grid-cols-2 gap-4">
-                <p className="font-bold">Language:</p>
-                <p>{item.language}</p>
-                <p className="font-bold">Data Type:</p>
-                <p>{item.dataType}</p>
-                <p className="font-bold">Information Type:</p>
-                <p>{item.informationType}</p>
-              </div>
-              <div className="mt-4">
-                <div className="flex items-center">
-                  <p className="font-bold mr-2">CID:</p>
-                  <div className="flex items-center">
-                    <span className="bg-gray-200 px-2 py-1 text-sm rounded">{item.label}</span>
-                    <button
-                      className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.label);
-                        setCopied(true);
-                      }}
-                    >
-                      Copy CID
-                    </button>
-                    {copied && (
-                      <span className="text-green-500 text-sm ml-2">CID copied!</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              
-            </div>
-          
-          ))}
+  {data.map((item, index) => (
+    <div key={index} className="w-9/12 bg-white text-black p-6 rounded shadow my-4">
+      <div className="grid grid-cols-2 gap-4">
+        <p className="font-bold">Language:</p>
+        <p>{item.language}</p>
+        <p className="font-bold">Data Type:</p>
+        <p>{item.dataType}</p>
+        <p className="font-bold">Information Type:</p>
+        <p>{item.informationType}</p>
+        <p className="font-bold">Language Family:</p>
+        <p>{item.languageFamily? item.languageFamily: ""}</p>
+        <p className="font-bold">Description: </p>
+        <p>{item.description? item.description: ""}</p>
+      </div>
+      <div className="mt-4">
+        <div className="flex items-center">
+          <p className="font-bold mr-2">CID:</p>
+          <div className="flex items-center">
+            <span className="bg-gray-200 px-2 py-1 text-sm rounded">{item.label}</span>
+            <button
+              className="ml-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded"
+              onClick={() => {
+                navigator.clipboard.writeText(item.label);
+                setCopied(true);
+              }}
+            >
+              Copy CID
+            </button>
+            {copied && (
+              <span className="text-green-500 text-sm ml-2">CID copied!</span>
+            )}
+          </div>
         </div>
+      </div>
+    </div>
+  ))}
+</div>
+
       </div>
     </div>
   );

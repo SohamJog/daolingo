@@ -121,6 +121,10 @@ const VoterPage = () => {
                 <p>{item.dataType}</p>
                 <p className="font-bold">Information Type:</p>
                 <p>{item.informationType}</p>
+                <p className="font-bold">Language Family:</p>
+                <p>{item.languageFamily? item.languageFamily: ""}</p>
+                <p className="font-bold">Description: </p>
+                <p>{item.description? item.description: ""}</p>
               </div>
               <div className="mt-4">
                 <a href={item.carLink} download className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded">

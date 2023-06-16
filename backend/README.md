@@ -52,4 +52,4 @@ Ownership transferred
 }
 
 
-use getPastEvents to get the logs and the id of the proposal
+

@@ -47,6 +47,9 @@ function Inputs() {
   const [language, setLanguage] = useState("");
   const [dataType, setDataType] = useState("");
   const [informationType, setInformationType] = useState("");
+  const [languageFamily, setLanguageFamily] = useState("");
+  const [description, setDescription] = useState("");
+
 
 
   //const [network, setNetwork] = useState("");
@@ -61,6 +64,14 @@ function Inputs() {
 
   const handleChangeInformationType = (event) => {
     setInformationType(event.target.value);
+  };
+
+  const handleChangeLanguageFamily = (event) => {
+    setLanguageFamily(event.target.value);
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
   };
 
   const handleChangeCommP = (event) => {
@@ -332,6 +343,13 @@ function Inputs() {
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={dataType} onChange={handleChangeDataType} />
       <div> <label className="mb-1">Information Type. (Eg. Dictionary, Book, Misc)</label></div>
       <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={informationType} onChange={handleChangeInformationType} />
+
+      <div> <label className="mb-1">Description of the content</label></div>
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={description} onChange={handleChangeDescription} />
+
+      <div> <label className="mb-1">Language Family</label></div>
+      <input className="input-elem bg-gray-100 rounded w-full mb-4 p-2" type="text" value={languageFamily} onChange={handleChangeLanguageFamily} />
+      
 
 
   
