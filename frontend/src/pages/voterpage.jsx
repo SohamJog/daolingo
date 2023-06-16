@@ -39,6 +39,7 @@ const VoterPage = () => {
   async function getProposals() {
     const proposals = await getAllProposals();
     setData(proposals);
+
   }
 
   async function getTokens() {
@@ -157,7 +158,7 @@ const VoterPage = () => {
                 </a>
                 </button>
                 <button className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded'
-                onClick={() => handleDiscussClick(item.proposalId)}>
+                onClick={() => handleDiscussClick(item.id)}>
                   Discuss
                 </button>
                 

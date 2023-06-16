@@ -79,7 +79,7 @@ export async function deleteProposal(proposalId) {
 }
 
 export async function getProposalParams(proposalId) {
-  const collectionReference = db.collection("Proposal");
+  const collectionReference = await db.collection("Proposal");
   const record = await collectionReference.record(proposalId).get();
   //console.log(record.data)
   const DealRequestStruct =[
@@ -99,7 +99,7 @@ export async function getProposalParams(proposalId) {
 }
 
 export async function createProfile(wallet) {
-  const collectionReference = db.collection("Profile");
+  const collectionReference = await db.collection("Profile");
   //find profile with wallet
   //if not found, create new profile
   const temp = await collectionReference.record(wallet).get();
@@ -112,25 +112,25 @@ export async function createProfile(wallet) {
 }
 
 export async function addContribution(wallet, contribution) {
-  const collectionReference = db.collection("Profile");
+  const collectionReference = await db.collection("Profile");
   await collectionReference.record(wallet).call("addContribution", [contribution]);
 }
 
 export async function getContributions(wallet) {
-  const collection = db.collection("Profile").record(wallet).get();
+  const collection = await db.collection("Profile").record(wallet).get();
   const contributions = collection.data.contributions;
   return contributions;
 }
 
 export async function getNumberOfContributions(wallet) {
-  const collection = db.collection("Profile").record(wallet).get();
+  const collection = await db.collection("Profile").record(wallet).get();
   const contributions = collection.data.contributions;
   return contributions.length;
 }
 
 
 export async function createChat(proposalId) {
-  const collectionReference = db.collection("Chat");
+  const collectionReference = await db.collection("Chat");
   const temp = await collectionReference.record(proposalId).get();
   if(temp.data != null) {
     console.log("already exists")
@@ -140,25 +140,36 @@ export async function createChat(proposalId) {
 }
 
 export async function addMessage(proposalId, message) {
-  const collectionReference = db.collection("Chat");
+  const collectionReference =  db.collection("Chat");
   await collectionReference.record(proposalId).call("addMessage", [message]);
 }
 
 export async function addMessenger(proposalId, messenger) {
-  const collectionReference = db.collection("Chat");
+  const collectionReference =  db.collection("Chat");
   await collectionReference.record(proposalId).call("addMessenger", [messenger]);
 }
 
 export async function getMessages(proposalId) {
-  const collection = db.collection("Chat").record(proposalId).get();
+  const collection = await db.collection("Chat").record(proposalId).get();
+  //console.log(collection.data)
   const messages = collection.data.messages;
   const messengers = collection.data.messengers;
   let ret = []
   for (let i = 0; i < messages.length; i++) {
     ret.push({messenger: messengers[i], message: messages[i]})
   }
+  //console.log(ret)
   return ret;
 }
+
+export async function popMessages(proposalId) {
+  const collectionReference = db.collection("Chat");
+  await collectionReference.record(proposalId).call("popMessages");
+}
+
+//getMessages("82019313872436929584558327607292929936654932147573250138881067729609655510616")
+
+//popMessages("82019313872436929584558327607292929936654932147573250138881067729609655510616")
 
 //addMessenger("82019313872436929584558327607292929936654932147573250138881067729609655510616", "0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1")
 

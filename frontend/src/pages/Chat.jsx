@@ -1,9 +1,22 @@
-import React from 'react';
+import { getMessages } from '@/scripts/polybase';
+import React, { useEffect } from 'react';
 
 const Chat = (props ) => {
   const proposalId = props.proposalId;
   const [messages, setMessages] = React.useState([]);
   const [newMessage, setNewMessage] = React.useState('');
+
+  useEffect(() => {
+    //console.log(proposalId)
+    // Fetch messages from the server and add them to the messages state
+    getAllMessages()
+  }, []);
+
+  async function getAllMessages() {
+    const messages = await getMessages(proposalId);
+    setMessages(messages);
+    //console.log(messages)
+  }
 
   const handleSendMessage = () => {
     if (newMessage.trim() !== '') {
@@ -16,11 +29,19 @@ const Chat = (props ) => {
     // Handle closing the chat component here
     props.handleCloseChat();
   };
+  const truncatedProposalId =
+    proposalId.length > 5 ? `${proposalId.slice(0, 5)}...` : proposalId;
 
+
+    const truncate = (str) => {
+      return str.length > 10 ? str.substring(0, 7) + "..." : str;
+    }
+
+  
   return (
-    <div className="fixed bottom-5 right-5 w-72 bg-white rounded shadow-md">
+    <div className="fixed bottom-5 right-5 w-96 bg-white rounded shadow-md">
       <div className="flex justify-between items-center px-4 py-2 bg-gray-200">
-        <h4 className="text-lg font-bold">Chat - Proposal #{proposalId}</h4>
+        <h4 className="text-lg font-bold">Chat - Proposal #{truncatedProposalId}</h4>
         <button
           className="text-gray-500 hover:text-gray-700 focus:outline-none"
           onClick={handleCloseChat}
@@ -42,7 +63,7 @@ const Chat = (props ) => {
       <div className="px-4 py-2 h-40 overflow-y-auto">
         {messages.map((message, index) => (
           <div key={index} className="mb-2">
-            <span className="font-bold">User:</span> {message}
+            <span className="font-bold">{truncate(message.messenger)}: </span> {message.message}
           </div>
         ))}
       </div>
