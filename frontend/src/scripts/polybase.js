@@ -23,10 +23,10 @@ export async function createUser() {
 
 }
 
-export async function createProposal(proposer, proposalId, language, dataType, informationType, DealRequestStruct) {
+export async function createProposal(languageFamily, description, proposer, proposalId, language, dataType, informationType, DealRequestStruct) {
   const [cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, extraParams] = DealRequestStruct;
   const [carLink, carSize, tempBool1, tempBool2] = extraParams;
-  await db.collection("Proposal").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carLink.toString(), carSize.toString(), proposer.toString()]);
+  await db.collection("Proposal").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carLink.toString(), carSize.toString(), proposer.toString(),  description.toString(), languageFamily.toString()]);
 }
 
 
@@ -39,11 +39,13 @@ export async function createArchive(DealRequestStruct, proposalId) {
   const language = record.data.language;
   const dataType = record.data.dataType;
   const informationType = record.data.informationType;
+  const languageFamily = record.data.languageFamily? record.data.languageFamily : "";
+  const description = record.data.description? record.data.description : "";
 
   const [cidHex, pieceSize, verifiedDeal, label, startEpoch, endEpoch, storagePricePerEpoch, providerCollateral, clientCollateral, extraParamsVersion, extraParams] = DealRequestStruct;
   const [carLink, carSize, tempBool1, tempBool2] = extraParams;
 
-  await db.collection("Archive").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carSize.toString(), proposer.toString()]);
+  await db.collection("Archive").create([proposalId.toString(), language.toString(), dataType.toString(), informationType.toString(), cidHex.toString(), pieceSize.toString(), verifiedDeal.toString(), label.toString(), startEpoch.toString(), endEpoch.toString(), storagePricePerEpoch.toString(), providerCollateral.toString(), clientCollateral.toString(), extraParamsVersion.toString(), carSize.toString(), proposer.toString(), description.toString(), languageFamily.toString()]);
   console.log('Created archive!')
 }
 
