@@ -2,21 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { getAllProposals } from '@/scripts/polybase';
 import { vote } from '@/scripts/aux';
 import { ethers } from "ethers";
+import Chat from "./Chat.jsx";
 
 import governorContract from "../../contracts/GovernorContract.json";
 import dataGovernanceToken from "../../contracts/DataGovernanceToken.json";
+
+
+
 
 
 const VoterPage = () => {
   // Dummy data
   const [data, setData] = useState([]);
   const [tokens, setTokens] = useState(0);
+  const [proposalId, setProposalId] = useState(0);
+  const [showChat, setShowChat] = useState(false);
 
 
   useEffect(() => {
     getTokens();
     getProposals();
   }, []);
+
+
+  const handleDiscussClick = (id) => {
+    setProposalId(id);
+    setShowChat(true);
+  };
+  const handleCloseChat = () => {
+
+    setShowChat(false);
+  };
+
+
 
   async function getProposals() {
     const proposals = await getAllProposals();
@@ -111,7 +129,13 @@ const VoterPage = () => {
         <div className="bg-gray-200 p-6 rounded shadow-lg my-4 w-96 transform transition-transform duration-300 hover:scale-105">
   <p className="text-2xl font-semibold mb-2">Your Voting Power:</p>
   <p className="text-2xl font-bold text-black">{tokens}</p>
-</div>
+      </div>
+
+
+          {showChat ? (
+            <Chat proposalId={proposalId} handleCloseChat={handleCloseChat} />
+          ) : null}
+
           {data.map((item, index) => (
             <div key={index} className="bg-white text-black p-6 rounded shadow my-4 w-96">
               <div className="grid grid-cols-2 gap-4">
@@ -126,10 +150,18 @@ const VoterPage = () => {
                 <p className="font-bold">Description: </p>
                 <p>{item.description? item.description: ""}</p>
               </div>
-              <div className="mt-4">
+              <div className="flex justify-between mt-4">
+                <button>
                 <a href={item.carLink} download className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded">
                   Download
                 </a>
+                </button>
+                <button className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded'
+                onClick={() => handleDiscussClick(item.proposalId)}>
+                  Discuss
+                </button>
+                
+                
               </div>
               <div className="flex justify-between mt-4">
                 <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" onClick={() => handleVoteFor(item.id)}>
@@ -141,6 +173,10 @@ const VoterPage = () => {
               </div>
             </div>
           ))}
+
+          
+
+
         </div>
       </div>
     </div>

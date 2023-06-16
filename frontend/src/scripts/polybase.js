@@ -100,6 +100,13 @@ export async function getProposalParams(proposalId) {
 
 export async function createProfile(wallet) {
   const collectionReference = db.collection("Profile");
+  //find profile with wallet
+  //if not found, create new profile
+  const temp = await collectionReference.record(wallet).get();
+  if(temp.data != null) {
+    console.log("already exists")
+    return 
+  }
   //keep id = public key
   await collectionReference.create([wallet, wallet]);
 }
@@ -124,6 +131,11 @@ export async function getNumberOfContributions(wallet) {
 
 export async function createChat(proposalId) {
   const collectionReference = db.collection("Chat");
+  const temp = await collectionReference.record(proposalId).get();
+  if(temp.data != null) {
+    console.log("already exists")
+    return 
+  }
   await collectionReference.create([proposalId]);
 }
 
@@ -147,6 +159,10 @@ export async function getMessages(proposalId) {
   }
   return ret;
 }
+
+//addMessenger("82019313872436929584558327607292929936654932147573250138881067729609655510616", "0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1")
+
+//addContribution("0x918e61236aC6FbB5EAa57a88709E2Fa43E932DE1", "48765461197497924543818806022063248975949937292401964872751984310560292309794");
 
 //getProposalParams("24923000271803792251928267856477390263985430244943514007382740670081887006376");
 
