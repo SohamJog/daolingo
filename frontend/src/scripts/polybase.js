@@ -164,6 +164,16 @@ export async function getMessages(proposalId) {
   return ret;
 }
 
+export async function getDataForProfile(proposalId) {
+  //get archive object with id = proposalId
+  const collection = await db.collection("Archive").record(proposalId).get();
+
+  //console.log(collection.data.language)
+  return {language: collection.data.language? collection.data.language: " ", description: collection.data.description? collection.data.description: " "}
+}
+
+//console.log(await getDataForProfile("48765461197497924543818806022063248975949937292401964872751984310560292309794"))
+
 export async function popMessages(proposalId) {
   const collectionReference = db.collection("Chat");
   await collectionReference.record(proposalId).call("popMessages");

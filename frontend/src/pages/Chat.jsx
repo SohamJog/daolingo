@@ -4,6 +4,8 @@ import { FaTimes } from 'react-icons/fa';
 import Profile from './profile.jsx';
 
 
+
+
 const Chat = (props ) => {
   const proposalId = props.proposalId;
   const [messages, setMessages] = React.useState([]);

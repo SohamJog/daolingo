@@ -11,6 +11,8 @@ import dataGovernanceToken from "../../contracts/DataGovernanceToken.json";
 
 
 
+
+
 const VoterPage = () => {
   // Dummy data
   const [data, setData] = useState([]);
