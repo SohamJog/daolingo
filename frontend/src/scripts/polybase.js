@@ -121,6 +121,33 @@ export async function getNumberOfContributions(wallet) {
   return contributions.length;
 }
 
+
+export async function createChat(proposalId) {
+  const collectionReference = db.collection("Chat");
+  await collectionReference.create([proposalId]);
+}
+
+export async function addMessage(proposalId, message) {
+  const collectionReference = db.collection("Chat");
+  await collectionReference.record(proposalId).call("addMessage", [message]);
+}
+
+export async function addMessenger(proposalId, messenger) {
+  const collectionReference = db.collection("Chat");
+  await collectionReference.record(proposalId).call("addMessenger", [messenger]);
+}
+
+export async function getMessages(proposalId) {
+  const collection = db.collection("Chat").record(proposalId).get();
+  const messages = collection.data.messages;
+  const messengers = collection.data.messengers;
+  let ret = []
+  for (let i = 0; i < messages.length; i++) {
+    ret.push({messenger: messengers[i], message: messages[i]})
+  }
+  return ret;
+}
+
 //getProposalParams("24923000271803792251928267856477390263985430244943514007382740670081887006376");
 
 // createArchive(
