@@ -49,7 +49,7 @@ export function Home() {
                 color="white"
                 className="mb-6 font-black"
               >
-                DAOLINGO
+                DAO<span className="text-lime-500 font-fancy">LINGO</span>
               </Typography>
               <Typography variant="lead" color="white" className="opacity-80">
                 Reviving Languages, Saving Forgotten Tongues

@@ -79,7 +79,7 @@ export async function deleteProposal(proposalId) {
 }
 
 export async function getProposalParams(proposalId) {
-  const collectionReference = await db.collection("Proposal");
+  const collectionReference = db.collection("Proposal");
   const record = await collectionReference.record(proposalId).get();
   //console.log(record.data)
   const DealRequestStruct =[
@@ -99,7 +99,7 @@ export async function getProposalParams(proposalId) {
 }
 
 export async function createProfile(wallet) {
-  const collectionReference = await db.collection("Profile");
+  const collectionReference = db.collection("Profile");
   //find profile with wallet
   //if not found, create new profile
   const temp = await collectionReference.record(wallet).get();
@@ -112,11 +112,13 @@ export async function createProfile(wallet) {
 }
 
 export async function addContribution(wallet, contribution) {
-  const collectionReference = await db.collection("Profile");
+  const collectionReference = db.collection("Profile");
   await collectionReference.record(wallet).call("addContribution", [contribution]);
 }
 
 export async function getContributions(wallet) {
+  //console.log(wallet)
+
   const collection = await db.collection("Profile").record(wallet).get();
   const contributions = collection.data.contributions;
   return contributions;

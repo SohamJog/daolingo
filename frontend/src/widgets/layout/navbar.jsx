@@ -82,7 +82,7 @@ export function Navbar({ brandName, routes, action }) {
       <div className="container mx-auto flex items-center justify-between text-white ">
         <Link to="/">
           <Typography className="mr-4 ml-2 cursor-pointer py-1.5 font-bold text-4xl text-white tracking-wider uppercase">
-            {brandName}
+            DAO<span className="text-lime-500 font-fancy">LINGO</span>
           </Typography>
         </Link>
         
